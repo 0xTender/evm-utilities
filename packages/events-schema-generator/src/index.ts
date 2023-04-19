@@ -1,3 +1,5 @@
-import {} from '@evm-utilities/helpers';
+import { Contract } from 'ethers';
 
-export {};
+export const get_events_list = <T extends Contract>(contract: T) => {
+  return Object.keys(contract.filters);
+};
