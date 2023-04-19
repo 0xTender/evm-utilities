@@ -31,8 +31,6 @@ const contracts: {
 const main = async () => {
   const provider = get_json_rpc_provider('http://127.0.0.1:8545');
 
-  const contract_name = 'Candy';
-
   const contract_metadata = contracts.map((contract) => {
     return {
       ...contract,
