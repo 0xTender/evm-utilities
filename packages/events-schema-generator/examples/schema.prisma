@@ -27,23 +27,22 @@ model Candy {
 }
 
 model AdminModified {
-    id              Int      @id @default(autoincrement())
-    Candy           Candy    @relation(fields: [CandyId], references: [id])
-    CandyId         Int
-    block           Int
-    transactionHash String
-    logIndex        Int
-    createdAt       DateTime @default(now())
-    updatedAt       DateTime @updatedAt
-
-    event AdminModifiedEvent @relation(fields: [AdminModifiedEventId], references: [id])
-
-    AdminModifiedEventId Int
+    id                 Int                 @id @default(autoincrement())
+    Candy              Candy               @relation(fields: [CandyId], references: [id])
+    CandyId            Int
+    block              Int
+    transactionHash    String
+    logIndex           Int
+    createdAt          DateTime            @default(now())
+    updatedAt          DateTime            @updatedAt
+    AdminModifiedEvent AdminModifiedEvent?
 }
 
 model AdminModifiedEvent {
-    id            Int             @id @default(autoincrement())
-    AdminModified AdminModified[]
+    id Int @id @default(autoincrement())
+
+    AdminModified   AdminModified @relation(fields: [AdminModifiedId], references: [id])
+    AdminModifiedId Int           @unique
 
     account String
     isAdmin String

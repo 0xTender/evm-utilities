@@ -28,7 +28,7 @@ const main = async () => {
     contract_name
   );
   writeFileSync(
-    join(__dirname, 'output', 'postgres.prisma'),
+    join(__dirname, '..', 'examples', 'postgres.prisma'),
     await generate_events_schema(metadata, 'postgres')
   );
 };

@@ -51,7 +51,8 @@ export const get_contract_metadata = async <T extends Contract>(
 
 export const generate_events_schema = async (
   metadata: PromiseType<ReturnType<typeof get_contract_metadata>>,
-  extension_name: keyof typeof extensions
+  extension_name: keyof typeof extensions,
+  init_template?: string
 ) => {
   const extension = extensions[extension_name];
   const templatePath = join(__dirname, 'templates', extension.file_name);
@@ -63,7 +64,7 @@ export const generate_events_schema = async (
   const engine_type = extension.engine;
 
   if (engine_type === 'liquid') {
-    const init_template = `
+    init_template ??= `
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["multiSchema"]

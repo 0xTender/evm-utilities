@@ -33,14 +33,24 @@ model AdminModified {
     id      Int    @id @default(autoincrement())
     Candy Candy @relation(fields: [CandyId], references: [id])
     CandyId Int
+
     block   Int
     transactionHash String
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    data AdminModifiedEvent?
+}
+
+model AdminModifiedEvent {
+    id      Int    @id @default(autoincrement())
+    AdminModified AdminModified @relation(fields: [AdminModifiedId], references: [id])
+    AdminModifiedId Int @unique
     account String
     isAdmin String
     
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 
@@ -48,15 +58,25 @@ model Approval {
     id      Int    @id @default(autoincrement())
     Candy Candy @relation(fields: [CandyId], references: [id])
     CandyId Int
+
     block   Int
     transactionHash String
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    data ApprovalEvent?
+}
+
+model ApprovalEvent {
+    id      Int    @id @default(autoincrement())
+    Approval Approval @relation(fields: [ApprovalId], references: [id])
+    ApprovalId Int @unique
     owner String
     approved String
     tokenId String
     
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 
@@ -64,15 +84,25 @@ model ApprovalForAll {
     id      Int    @id @default(autoincrement())
     Candy Candy @relation(fields: [CandyId], references: [id])
     CandyId Int
+
     block   Int
     transactionHash String
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    data ApprovalForAllEvent?
+}
+
+model ApprovalForAllEvent {
+    id      Int    @id @default(autoincrement())
+    ApprovalForAll ApprovalForAll @relation(fields: [ApprovalForAllId], references: [id])
+    ApprovalForAllId Int @unique
     owner String
     operator String
     approved String
     
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 
@@ -80,14 +110,24 @@ model OwnershipTransferred {
     id      Int    @id @default(autoincrement())
     Candy Candy @relation(fields: [CandyId], references: [id])
     CandyId Int
+
     block   Int
     transactionHash String
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    data OwnershipTransferredEvent?
+}
+
+model OwnershipTransferredEvent {
+    id      Int    @id @default(autoincrement())
+    OwnershipTransferred OwnershipTransferred @relation(fields: [OwnershipTransferredId], references: [id])
+    OwnershipTransferredId Int @unique
     previousOwner String
     newOwner String
     
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 
@@ -95,15 +135,25 @@ model Transfer {
     id      Int    @id @default(autoincrement())
     Candy Candy @relation(fields: [CandyId], references: [id])
     CandyId Int
+
     block   Int
     transactionHash String
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    data TransferEvent?
+}
+
+model TransferEvent {
+    id      Int    @id @default(autoincrement())
+    Transfer Transfer @relation(fields: [TransferId], references: [id])
+    TransferId Int @unique
     from String
     to String
     tokenId String
     
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 
