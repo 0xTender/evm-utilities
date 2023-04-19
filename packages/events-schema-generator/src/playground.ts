@@ -1,5 +1,8 @@
-import { join } from 'path';
-import { get_events_list } from './index';
+import {
+  get_events_list,
+  sanitize_event,
+  get_contract_metadata,
+} from './index';
 import { readFileSync } from 'fs';
 import {
   get_chain_id,
@@ -24,18 +27,11 @@ const main = async () => {
 
   const instance = get_contract(contract.address, contract.abi, provider);
 
-  const chainId = await get_chain_id(provider);
-
-  const latestBlock = await get_latest_block(provider);
-
-  const events = get_events_list(instance);
-
-  const deploymentBlock = await get_block_from_tx_hash(
-    contract.transactionHash,
-    provider
+  const metadata = await get_contract_metadata(
+    instance,
+    contract.transactionHash
   );
-
-  console.log({ chainId, latestBlock, events, deploymentBlock });
+  console.log(metadata);
 };
 
 main().catch(console.error);
