@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Contract {
+    id      Int    @id @default(autoincrement())
+    address String
+    chainId Int
+
+    transactionHash String
+
+    deploymentBlock  Int
+    indexedTillBlock Int
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    TransferEvent TransferEvent[]
+
+    @@unique([address, chainId])
+}
+
+model TransferEvent {
+    id Int @id @default(autoincrement())
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    from  String
+    to    String
+    value String
+
+    contract   Contract @relation(fields: [contractId], references: [id])
+    contractId Int
+}
