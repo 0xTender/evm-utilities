@@ -1,0 +1,33 @@
+{
+  "name": "events-schema-generator",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/events-schema-generator/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/events-schema-generator",
+        "main": "packages/events-schema-generator/src/index.ts",
+        "tsConfig": "packages/events-schema-generator/tsconfig.lib.json",
+        "assets": ["packages/events-schema-generator/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs events-schema-generator {args.ver} {args.tag}"
+      },
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/events-schema-generator/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,15 +1,26 @@
 {
-  "name": ".",
+  "name": "evm-utilities",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {},
   "private": true,
-  "dependencies": {},
   "devDependencies": {
+    "@nrwl/eslint-plugin-nx": "15.9.2",
+    "@nrwl/js": "^15.9.2",
+    "@nrwl/linter": "15.9.2",
     "@nrwl/nx-cloud": "latest",
-    "nx": "15.9.2"
+    "@types/node": "^18.15.11",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "eslint": "~8.15.0",
+    "eslint-config-prettier": "8.1.0",
+    "ethers": "^6.3.0",
+    "nx": "15.9.2",
+    "prettier": "^2.6.2",
+    "typescript": "^5.0.4"
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "dependencies": {}
 }
