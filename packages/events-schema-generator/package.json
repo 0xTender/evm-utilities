@@ -3,5 +3,8 @@
   "version": "0.0.1",
   "type": "commonjs",
   "private": true,
-  "scripts": {}
+  "scripts": {},
+  "peerDependencies": {
+    "@0xtender/helpers": "0.0.1"
+  }
 }
