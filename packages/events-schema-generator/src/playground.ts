@@ -1,21 +1,18 @@
-import {
-  get_contract_metadata,
-  generate_single_events_schema,
-  generate_events_schema,
-} from './index';
+import { generate_events_schema } from './index';
 import { readFileSync, writeFileSync } from 'fs';
 import { get_contract, get_json_rpc_provider } from '@evm-utilities/helpers';
 
 import { join } from 'path';
+import { homedir } from 'os';
 
-const AccessControlPath =
-  '/Users/aniketchowdhury/Experiments/armoury/packages/core/deployments/localhost/AccessControl.json';
-const ActorFactoryPath =
-  '/Users/aniketchowdhury/Experiments/armoury/packages/core/deployments/localhost/ActorFactory.json';
-const CandyPath =
-  '/Users/aniketchowdhury/Experiments/armoury/packages/core/deployments/localhost/Candy.json';
-const RegistryPath =
-  '/Users/aniketchowdhury/Experiments/armoury/packages/core/deployments/localhost/Registry.json';
+const home = homedir();
+
+const pathToFolder = `Experiments/armoury/packages/core/deployments/localhost`;
+
+const AccessControlPath = `${home}/${pathToFolder}/AccessControl.json`;
+const ActorFactoryPath = `${home}/${pathToFolder}/ActorFactory.json`;
+const CandyPath = `${home}/${pathToFolder}/Candy.json`;
+const RegistryPath = `${home}/${pathToFolder}/Registry.json`;
 
 const contracts: {
   address: string;
@@ -36,10 +33,6 @@ const main = async () => {
 
   const contract_name = 'Candy';
 
-  // for (let index = 0; index < contracts.length; index++) {
-  //   const contract = contracts[index];
-  //   const instance =
-  // }
   const contract_metadata = contracts.map((contract) => {
     return {
       ...contract,
