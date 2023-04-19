@@ -1,6 +1,7 @@
 {
-  "name": "@evm-utilities/events-schema-generator",
+  "name": "@0xtender/events-schema-generator",
   "version": "0.0.1",
   "type": "commonjs",
+  "private": true,
   "scripts": {}
 }

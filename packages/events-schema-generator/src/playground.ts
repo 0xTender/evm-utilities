@@ -1,6 +1,6 @@
 import { generate_events_schema } from './index';
 import { readFileSync, writeFileSync } from 'fs';
-import { get_contract, get_json_rpc_provider } from '@evm-utilities/helpers';
+import { get_contract, get_json_rpc_provider } from '@0xtender/helpers';
 
 import { join } from 'path';
 import { homedir } from 'os';

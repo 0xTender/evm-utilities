@@ -22,5 +22,8 @@
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@nrwl/devkit": "^15.9.2"
+  }
 }
