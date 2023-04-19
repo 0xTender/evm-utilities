@@ -1,0 +1,33 @@
+{
+  "name": "heisenberg-cli",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/heisenberg-cli/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/heisenberg-cli",
+        "main": "packages/heisenberg-cli/src/index.ts",
+        "tsConfig": "packages/heisenberg-cli/tsconfig.lib.json",
+        "assets": ["packages/heisenberg-cli/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs heisenberg-cli {args.ver} {args.tag}"
+      },
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/heisenberg-cli/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}
