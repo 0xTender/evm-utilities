@@ -11,12 +11,12 @@ model {{ contract_name }} {
     updatedAt DateTime @updatedAt
 
     {% for event in events %}
-    {{-event.name}} {{event.name-}}[]
+    {{-event.name}}{{contract_name}} {{event.name}}{{contract_name-}}[]
     {% endfor %}
 }   
 
 {% for event in events %}
-model {{event.name}} {
+model {{event.name}}{{contract_name}} {
     id      Int    @id @default(autoincrement())
     {{contract_name}} {{contract_name}} @relation(fields: [{{contract_name}}Id], references: [id])
     {{contract_name}}Id Int
@@ -26,13 +26,13 @@ model {{event.name}} {
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    data {{event.name-}}Event?
+    data {{event.name-}}{{contract_name}}Event?
 }
 
-model {{event.name}}Event {
+model {{event.name}}{{contract_name}}Event {
     id      Int    @id @default(autoincrement())
-    {{event.name}} {{event.name}} @relation(fields: [{{event.name}}Id], references: [id])
-    {{event.name}}Id Int @unique
+    {{event.name}}{{contract_name}} {{event.name}}{{contract_name}} @relation(fields: [{{event.name}}{{contract_name}}Id], references: [id])
+    {{event.name}}{{contract_name}}Id Int @unique
     {% for arg in event.inputs %}
     {{-arg.name}} String
     {% endfor %}

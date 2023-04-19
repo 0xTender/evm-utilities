@@ -49,10 +49,9 @@ export const get_contract_metadata = async <T extends Contract>(
   };
 };
 
-export const generate_events_schema = async (
+export const generate_single_events_schema = async (
   metadata: PromiseType<ReturnType<typeof get_contract_metadata>>,
-  extension_name: keyof typeof extensions,
-  init_template?: string
+  extension_name: keyof typeof extensions
 ) => {
   const extension = extensions[extension_name];
   const templatePath = join(__dirname, 'templates', extension.file_name);
@@ -64,7 +63,38 @@ export const generate_events_schema = async (
   const engine_type = extension.engine;
 
   if (engine_type === 'liquid') {
-    init_template ??= `
+    const engine = new Liquid();
+    const rendered = await engine.parseAndRender(template, {
+      contract_name: `${metadata.contractName}`,
+      events: metadata.events,
+    });
+
+    return rendered;
+  }
+  throw new Error('Engine not supported');
+};
+
+export const generate_events_schema = async <T extends Contract>(
+  contracts: {
+    instance: T;
+    transactionHash: string;
+    name: string;
+  }[],
+  extension_name: keyof typeof extensions
+) => {
+  const metadata: PromiseType<ReturnType<typeof get_contract_metadata>>[] = [];
+  for (let index = 0; index < contracts.length; index++) {
+    const contract = contracts[index];
+    metadata.push(
+      await get_contract_metadata(
+        contract.instance,
+        contract.transactionHash,
+        contract.name
+      )
+    );
+  }
+
+  const init_template = `
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["multiSchema"]
@@ -76,13 +106,17 @@ datasource db {
 }
 `;
 
-    const engine = new Liquid();
-    const rendered = await engine.parseAndRender(init_template + template, {
-      contract_name: `${metadata.contractName}`,
-      events: metadata.events,
-    });
+  let template = init_template;
 
-    return rendered;
+  for (let index = 0; index < metadata.length; index++) {
+    const contract_metadata = metadata[index];
+    const rendered = await generate_single_events_schema(
+      contract_metadata,
+      extension_name
+    );
+
+    template += rendered;
   }
-  throw new Error('Engine not supported');
+
+  return template;
 };
