@@ -1,0 +1,109 @@
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+model Candy {
+    id      Int    @id @default(autoincrement())
+    address String
+    chainId Int
+    transactionHash String
+
+    deploymentBlock  Int
+    indexedTillBlock Int
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    AdminModified AdminModified[]
+    Approval Approval[]
+    ApprovalForAll ApprovalForAll[]
+    OwnershipTransferred OwnershipTransferred[]
+    Transfer Transfer[]
+    
+}   
+
+
+model AdminModified {
+    id      Int    @id @default(autoincrement())
+    Candy Candy @relation(fields: [CandyId], references: [id])
+    CandyId Int
+    block   Int
+    transactionHash String
+    logIndex Int
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    account String
+    isAdmin String
+    
+}
+
+
+model Approval {
+    id      Int    @id @default(autoincrement())
+    Candy Candy @relation(fields: [CandyId], references: [id])
+    CandyId Int
+    block   Int
+    transactionHash String
+    logIndex Int
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    owner String
+    approved String
+    tokenId String
+    
+}
+
+
+model ApprovalForAll {
+    id      Int    @id @default(autoincrement())
+    Candy Candy @relation(fields: [CandyId], references: [id])
+    CandyId Int
+    block   Int
+    transactionHash String
+    logIndex Int
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    owner String
+    operator String
+    approved String
+    
+}
+
+
+model OwnershipTransferred {
+    id      Int    @id @default(autoincrement())
+    Candy Candy @relation(fields: [CandyId], references: [id])
+    CandyId Int
+    block   Int
+    transactionHash String
+    logIndex Int
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    previousOwner String
+    newOwner String
+    
+}
+
+
+model Transfer {
+    id      Int    @id @default(autoincrement())
+    Candy Candy @relation(fields: [CandyId], references: [id])
+    CandyId Int
+    block   Int
+    transactionHash String
+    logIndex Int
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    from String
+    to String
+    tokenId String
+    
+}
+
+

@@ -1,0 +1,33 @@
+model {{ contract_name }} {
+    id      Int    @id @default(autoincrement())
+    address String
+    chainId Int
+    transactionHash String
+
+    deploymentBlock  Int
+    indexedTillBlock Int
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    {% for event in events %}
+    {{-event.name}} {{event.name-}}[]
+    {% endfor %}
+}   
+
+{% for event in events %}
+model {{event.name}} {
+    id      Int    @id @default(autoincrement())
+    {{contract_name}} {{contract_name}} @relation(fields: [{{contract_name}}Id], references: [id])
+    {{contract_name}}Id Int
+    block   Int
+    transactionHash String
+    logIndex Int
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    {% for arg in event.inputs %}
+    {{-arg.name}} String
+    {% endfor %}
+}
+
+{% endfor %}

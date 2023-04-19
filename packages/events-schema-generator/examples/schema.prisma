@@ -11,11 +11,10 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Contract {
-    id      Int    @id @default(autoincrement())
-    address String
-    chainId Int
-
+model Candy {
+    id              Int    @id @default(autoincrement())
+    address         String
+    chainId         Int
     transactionHash String
 
     deploymentBlock  Int
@@ -24,21 +23,28 @@ model Contract {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    TransferEvent TransferEvent[]
-
-    @@unique([address, chainId])
+    AdminModified AdminModified[]
 }
 
-model TransferEvent {
-    id Int @id @default(autoincrement())
+model AdminModified {
+    id              Int      @id @default(autoincrement())
+    Candy           Candy    @relation(fields: [CandyId], references: [id])
+    CandyId         Int
+    block           Int
+    transactionHash String
+    logIndex        Int
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    event AdminModifiedEvent @relation(fields: [AdminModifiedEventId], references: [id])
 
-    from  String
-    to    String
-    value String
+    AdminModifiedEventId Int
+}
 
-    contract   Contract @relation(fields: [contractId], references: [id])
-    contractId Int
+model AdminModifiedEvent {
+    id            Int             @id @default(autoincrement())
+    AdminModified AdminModified[]
+
+    account String
+    isAdmin String
 }

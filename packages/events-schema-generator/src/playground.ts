@@ -1,16 +1,9 @@
-import {
-  get_events_list,
-  sanitize_event,
-  get_contract_metadata,
-} from './index';
-import { readFileSync } from 'fs';
-import {
-  get_chain_id,
-  get_contract,
-  get_json_rpc_provider,
-  get_latest_block,
-} from '@evm-utilities/helpers';
-import { get_block_from_tx_hash } from '../../helpers/src/lib/contract';
+import { get_contract_metadata, generate_events_schema } from './index';
+import { readFileSync, writeFileSync } from 'fs';
+import { get_contract, get_json_rpc_provider } from '@evm-utilities/helpers';
+
+import { Liquid } from 'liquidjs';
+import { join } from 'path';
 
 const contract: {
   address: string;
@@ -25,13 +18,19 @@ const contract: {
 const main = async () => {
   const provider = get_json_rpc_provider('http://127.0.0.1:8545');
 
+  const contract_name = 'Candy';
+
   const instance = get_contract(contract.address, contract.abi, provider);
 
   const metadata = await get_contract_metadata(
     instance,
-    contract.transactionHash
+    contract.transactionHash,
+    contract_name
   );
-  console.log(metadata);
+  writeFileSync(
+    join(__dirname, 'output', 'postgres.prisma'),
+    await generate_events_schema(metadata, 'postgres')
+  );
 };
 
 main().catch(console.error);

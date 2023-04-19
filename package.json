@@ -15,12 +15,12 @@
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
     "ethers": "^5.7.2",
+    "liquidjs": "^10.7.0",
     "nx": "15.9.2",
     "prettier": "^2.6.2",
     "typescript": "^5.0.4"
   },
   "workspaces": [
     "packages/*"
-  ],
-  "dependencies": {}
+  ]
 }
