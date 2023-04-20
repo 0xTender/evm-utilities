@@ -9,7 +9,11 @@ import { z } from 'zod';
 
 const program = new Command();
 
-program.name('heisenberg').description('Heisenberg CLI').version('0.0.2');
+const version = JSON.parse(
+  readFileSync(join(__dirname, '..', '..', 'package.json')).toString()
+).version;
+
+program.name('heisenberg').description('Heisenberg CLI').version(version);
 
 program
   .command('generate')
