@@ -1,5 +1,5 @@
 #!/usr/bin/env ts-node
-import { get_contract, get_json_rpc_provider } from '@0xtender/evm-helpers';
+import { get_contract } from '@0xtender/evm-helpers';
 import { generate_events_schema } from '@0xtender/events-schema-generator';
 import { Command } from 'commander';
 
@@ -7,6 +7,7 @@ import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 
 import { z } from 'zod';
+import { providers } from 'ethers';
 
 const program = new Command();
 
@@ -80,7 +81,9 @@ program
       for (let index = 0; index < contracts_parsed.length; index++) {
         const contract = contracts_parsed[index];
 
-        const provider = get_json_rpc_provider(contract.rpc);
+        let provider = providers.getDefaultProvider(contract.rpc);
+
+        // provider = get_json_rpc_provider(contract.rpc);
 
         const data: {
           address: string;
@@ -92,7 +95,7 @@ program
           data: {
             ...data,
             provider,
-            instance: get_contract(data.address, data.abi, provider),
+            instance: get_contract(data.address, data.abi),
             name: contract.name,
           },
         });
@@ -105,7 +108,7 @@ program
       );
 
       // console.log(options, rendered);
-
+      console.log(`Writing to ${resolve(options.outputFile)}`);
       writeFileSync(options.outputFile, rendered);
     }
   );

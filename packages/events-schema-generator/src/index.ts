@@ -31,16 +31,26 @@ export const sanitize_event = (event: EventFragment) => {
 export const get_contract_metadata = async <T extends Contract>(
   contract: T,
   transactionHash: string,
-  contractName: string
+  contractName: string,
+  strict = false
 ) => {
   const provider = contract.provider;
   const events = Object.entries(get_events(contract))
     .map((e) => e[1])
     .map(sanitize_event);
-
-  const chainId = await get_chain_id(provider);
-
-  const latestBlock = await get_latest_block(provider);
+  let chainId: number = -1;
+  let latestBlock: number = -1;
+  if (provider) {
+    chainId = await get_chain_id(provider);
+    latestBlock = await get_latest_block(provider);
+  } else {
+    console.warn(
+      `[WARN]: No provider found for contract or unavailable network: ${contractName}`
+    );
+    if (strict === true) {
+      throw new Error(`No provider found for contract ${contractName}`);
+    }
+  }
 
   return {
     events,

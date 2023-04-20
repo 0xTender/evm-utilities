@@ -43,14 +43,15 @@ if (version === undefined) {
   writeFileSync(parentRoot, JSON.stringify(json, null, 2));
 }
 
+console.log(`npx nx build ${name} --prod --with-deps --verbose`);
+execSync(`npx nx build ${name} --prod --with-deps --verbose`);
+
 if (name === 'events-schema-generator') {
   // execute a shell command
   execSync(
     `cp -r packages/events-schema-generator/src/templates dist/packages/events-schema-generator/src`
   );
 }
-
-execSync(`npx nx build ${name} --prod --with-deps --verbose`);
 
 // A simple SemVer validation to validate the version
 const validVersion = /^\d+\.\d+\.\d+(-\w+\.\d+)?/;

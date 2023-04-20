@@ -25,7 +25,7 @@ export const get_block_from_tx_hash = async (
 export const get_contract = <T extends Contract>(
   address: string,
   abi: any,
-  provider: providers.Provider
+  provider?: providers.Provider
 ) => {
   return new Contract(address, abi, provider) as T;
 };

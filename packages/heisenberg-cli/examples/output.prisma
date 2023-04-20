@@ -19,12 +19,12 @@ model Ownable {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    OwnershipTransferredOwnable OwnershipTransferredOwnable[]
+    OwnershipTransferred_Ownable OwnershipTransferred_Ownable[]
     
 }   
 
 
-model OwnershipTransferredOwnable {
+model OwnershipTransferred_Ownable {
     id      Int    @id @default(autoincrement())
     Ownable Ownable @relation(fields: [OwnableId], references: [id])
     OwnableId Int
@@ -34,13 +34,13 @@ model OwnershipTransferredOwnable {
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    data OwnershipTransferredOwnableEvent?
+    data OwnershipTransferred_Ownable_Event?
 }
 
-model OwnershipTransferredOwnableEvent {
+model OwnershipTransferred_Ownable_Event {
     id      Int    @id @default(autoincrement())
-    OwnershipTransferredOwnable OwnershipTransferredOwnable @relation(fields: [OwnershipTransferredOwnableId], references: [id])
-    OwnershipTransferredOwnableId Int @unique
+    OwnershipTransferred_Ownable OwnershipTransferred_Ownable @relation(fields: [OwnershipTransferred_Ownable_Id], references: [id])
+    OwnershipTransferred_Ownable_Id Int @unique
     previousOwner String
     newOwner String
     
