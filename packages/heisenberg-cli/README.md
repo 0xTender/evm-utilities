@@ -1,5 +1,7 @@
 # heisenberg-cli
 
+A cli for evm-utilities
+
 ```
 $ 0xtender-heisenberg --version
 ```
