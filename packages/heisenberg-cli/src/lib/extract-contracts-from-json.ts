@@ -1,4 +1,9 @@
-import { get_json_rpc_provider, get_contract } from '@0xtender/evm-helpers';
+import {
+  get_json_rpc_provider,
+  get_contract,
+  ValuesType,
+} from '@0xtender/evm-helpers';
+import { Contract, providers } from 'ethers';
 import { readFileSync, existsSync } from 'fs';
 import { join, dirname, resolve } from 'path';
 import { z } from 'zod';
@@ -38,7 +43,16 @@ export const extract_contract_from_json = (
     throw new Error(`Contract ${contract.path} not found`);
   });
 
-  const contracts = [];
+  const contracts: (ValuesType<typeof contracts_parsed> & {
+    data: {
+      address: string;
+      abi: any;
+      transactionHash: string;
+      provider: providers.JsonRpcProvider;
+      instance: Contract;
+      name: string;
+    };
+  })[] = [];
 
   for (let index = 0; index < contracts_parsed.length; index++) {
     const contract = contracts_parsed[index]!;
@@ -50,6 +64,7 @@ export const extract_contract_from_json = (
       abi: any;
       transactionHash: string;
     } = JSON.parse(readFileSync(contract.path).toString());
+
     contracts.push({
       ...contract,
       data: {
