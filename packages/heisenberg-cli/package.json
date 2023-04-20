@@ -1,0 +1,16 @@
+{
+  "name": "@0xtender/heisenberg-cli",
+  "version": "0.0.10",
+  "type": "commonjs",
+  "bin": {
+    "0xtender-heisenberg": "./src/lib/heisenberg.js"
+  },
+  "scripts": {
+    "postbuild": "chmod +x ./src/lib/heisenberg.js"
+  },
+  "dependencies": {
+    "commander": "^10.0.1",
+    "zod": "^3.21.4",
+    "ethers": "^5.7.2"
+  }
+}

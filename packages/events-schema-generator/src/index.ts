@@ -1,6 +1,10 @@
 import { Contract } from 'ethers';
 import { EventFragment } from 'ethers/lib/utils';
-import { get_chain_id, get_latest_block, PromiseType } from '@0xtender/helpers';
+import {
+  get_chain_id,
+  get_latest_block,
+  PromiseType,
+} from '@0xtender/evm-helpers';
 import { join } from 'path';
 import { extensions } from './extensions';
 import { readFileSync } from 'fs';
@@ -79,7 +83,8 @@ export const generate_events_schema = async <T extends Contract>(
     transactionHash: string;
     name: string;
   }[],
-  extension_name: keyof typeof extensions
+  extension_name: keyof typeof extensions,
+  init_template?: string
 ) => {
   const metadata: PromiseType<ReturnType<typeof get_contract_metadata>>[] = [];
   for (let index = 0; index < contracts.length; index++) {
@@ -93,7 +98,7 @@ export const generate_events_schema = async <T extends Contract>(
     );
   }
 
-  const init_template = `
+  init_template ??= `
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["multiSchema"]

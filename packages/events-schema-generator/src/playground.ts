@@ -1,6 +1,6 @@
 import { generate_events_schema } from './index';
 import { readFileSync, writeFileSync } from 'fs';
-import { get_contract, get_json_rpc_provider } from '@0xtender/helpers';
+import { get_contract, get_json_rpc_provider } from '@0xtender/evm-helpers';
 
 import { join } from 'path';
 import { homedir } from 'os';
@@ -30,8 +30,6 @@ const contracts: {
 
 const main = async () => {
   const provider = get_json_rpc_provider('http://127.0.0.1:8545');
-
-  const contract_name = 'Candy';
 
   const contract_metadata = contracts.map((contract) => {
     return {

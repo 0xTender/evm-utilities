@@ -9,13 +9,11 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true
   },
-  "assets": ["src/assets/**/*"],
   "files": [],
   "include": [],
   "references": [
     {
       "path": "./tsconfig.lib.json"
     }
-  ],
-  "exclude": ["src/playground.ts"]
+  ]
 }

@@ -2,7 +2,9 @@
   "name": "evm-utilities",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "heisenberg:generate-example": "tsx --tsconfig tsconfig.base.json ./packages/heisenberg-cli/src/lib/heisenberg.ts generate packages/heisenberg-cli/examples/contracts.json -i ./packages/heisenberg-cli/examples/input.prisma -o ./packages/heisenberg-cli/examples/output.prisma"
+  },
   "private": true,
   "devDependencies": {
     "@nrwl/eslint-plugin-nx": "15.9.2",
@@ -18,12 +20,15 @@
     "liquidjs": "^10.7.0",
     "nx": "15.9.2",
     "prettier": "^2.6.2",
+    "tsx": "^3.12.6",
     "typescript": "^5.0.4"
   },
   "workspaces": [
     "packages/*"
   ],
   "dependencies": {
-    "@nrwl/devkit": "^15.9.2"
+    "@0xtender/heisenberg-cli": "^0.0.2",
+    "@nrwl/devkit": "^15.9.2",
+    "tslib": "^2.5.0"
   }
 }

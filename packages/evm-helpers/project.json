@@ -1,0 +1,33 @@
+{
+  "name": "evm-helpers",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/evm-helpers/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/evm-helpers",
+        "main": "packages/evm-helpers/src/index.ts",
+        "tsConfig": "packages/evm-helpers/tsconfig.lib.json",
+        "assets": ["packages/evm-helpers/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs evm-helpers {args.ver} {args.tag}"
+      },
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/evm-helpers/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}
