@@ -23,6 +23,13 @@ function invariant(condition, message) {
 // Default "tag" to "next" so we won't publish the "latest" tag by accident.
 const [, , name, version, tag = 'latest', access = 'private'] = process.argv;
 
+if (name === 'events-schema-generator') {
+  // execute a shell command
+  execSync(
+    `cp -r packages/events-schema-generator/src/templates dist/packages/events-schema-generator/src`
+  );
+}
+
 console.log({ name, version, tag });
 // A simple SemVer validation to validate the version
 const validVersion = /^\d+\.\d+\.\d+(-\w+\.\d+)?/;

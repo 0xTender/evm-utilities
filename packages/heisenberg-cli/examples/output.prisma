@@ -1,0 +1,51 @@
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+model Ownable {
+    id      Int    @id @default(autoincrement())
+    address String
+    chainId Int
+    transactionHash String
+
+    deploymentBlock  Int
+    indexedTillBlock Int
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    OwnershipTransferredOwnable OwnershipTransferredOwnable[]
+    
+}   
+
+
+model OwnershipTransferredOwnable {
+    id      Int    @id @default(autoincrement())
+    Ownable Ownable @relation(fields: [OwnableId], references: [id])
+    OwnableId Int
+
+    block   Int
+    transactionHash String
+    logIndex Int
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    data OwnershipTransferredOwnableEvent?
+}
+
+model OwnershipTransferredOwnableEvent {
+    id      Int    @id @default(autoincrement())
+    OwnershipTransferredOwnable OwnershipTransferredOwnable @relation(fields: [OwnershipTransferredOwnableId], references: [id])
+    OwnershipTransferredOwnableId Int @unique
+    previousOwner String
+    newOwner String
+    
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+

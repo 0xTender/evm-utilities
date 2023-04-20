@@ -1,12 +1,9 @@
 {
   "name": "@0xtender/events-schema-generator",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "type": "commonjs",
   "scripts": {},
   "dependencies": {
     "liquidjs": "^10.7.0"
-  },
-  "peerDependencies": {
-    "@0xtender/evm-helpers": "0.0.4"
   }
 }
