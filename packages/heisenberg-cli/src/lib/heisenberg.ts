@@ -1,5 +1,5 @@
 #!/usr/bin/env ts-node
-import { get_contract, get_json_rpc_provider } from '@0xtender/helpers';
+import { get_contract, get_json_rpc_provider } from '@0xtender/evm-helpers';
 import { generate_events_schema } from '@0xtender/events-schema-generator';
 import { Command } from 'commander';
 

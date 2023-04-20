@@ -7,7 +7,7 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "importHelpers": true,
+    "importevm-helpers": true,
     "target": "es2015",
     "module": "esnext",
     "lib": ["es2017", "dom"],
@@ -19,7 +19,7 @@
         "packages/events-schema-generator/src/index.ts"
       ],
       "@0xtender/heisenberg-cli": ["packages/heisenberg-cli/src/index.ts"],
-      "@0xtender/helpers": ["packages/helpers/src/index.ts"]
+      "@0xtender/evm-helpers": ["packages/evm-helpers/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

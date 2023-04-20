@@ -1,6 +1,10 @@
 import { Contract } from 'ethers';
 import { EventFragment } from 'ethers/lib/utils';
-import { get_chain_id, get_latest_block, PromiseType } from '@0xtender/helpers';
+import {
+  get_chain_id,
+  get_latest_block,
+  PromiseType,
+} from '@0xtender/evm-helpers';
 import { join } from 'path';
 import { extensions } from './extensions';
 import { readFileSync } from 'fs';
