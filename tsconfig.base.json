@@ -7,7 +7,7 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "importevm-helpers": true,
+    "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
     "lib": ["es2017", "dom"],

@@ -20,6 +20,11 @@ program
   .command('generate')
   .description("Generate contract events' schema")
   .argument('<contracts.json>', 'contracts to generate schema for')
+  .option('-i, --input-file <input_file>', 'base input file for the schema')
+  .requiredOption(
+    '-o, --output-file <output_file>',
+    'output file for the schema'
+  )
   .action(async (contracts_json: string) => {
     contracts_json = resolve(contracts_json);
 

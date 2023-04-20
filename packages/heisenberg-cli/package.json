@@ -1,6 +1,6 @@
 {
   "name": "@0xtender/heisenberg-cli",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "type": "commonjs",
   "bin": {
     "0xtender-heisenberg": "./src/lib/heisenberg.js"
@@ -15,6 +15,6 @@
   },
   "peerDependencies": {
     "@0xtender/evm-helpers": "0.0.4",
-    "@0xtender/events-schema-generator": "0.0.2"
+    "@0xtender/events-schema-generator": "0.0.4"
   }
 }
