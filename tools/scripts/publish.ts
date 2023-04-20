@@ -50,6 +50,8 @@ if (name === 'events-schema-generator') {
   );
 }
 
+execSync(`npx nx build ${name} --prod --with-deps --verbose`);
+
 // A simple SemVer validation to validate the version
 const validVersion = /^\d+\.\d+\.\d+(-\w+\.\d+)?/;
 invariant(
