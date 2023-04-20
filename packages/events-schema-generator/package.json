@@ -1,10 +1,10 @@
 {
   "name": "@0xtender/events-schema-generator",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "commonjs",
   "private": true,
   "scripts": {},
   "peerDependencies": {
-    "@0xtender/helpers": "0.0.2"
+    "@0xtender/helpers": "0.0.3"
   }
 }

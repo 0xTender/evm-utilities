@@ -79,7 +79,8 @@ export const generate_events_schema = async <T extends Contract>(
     transactionHash: string;
     name: string;
   }[],
-  extension_name: keyof typeof extensions
+  extension_name: keyof typeof extensions,
+  init_template?: string
 ) => {
   const metadata: PromiseType<ReturnType<typeof get_contract_metadata>>[] = [];
   for (let index = 0; index < contracts.length; index++) {
@@ -93,7 +94,7 @@ export const generate_events_schema = async <T extends Contract>(
     );
   }
 
-  const init_template = `
+  init_template ??= `
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["multiSchema"]

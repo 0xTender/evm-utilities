@@ -1,6 +1,6 @@
 {
   "name": "@0xtender/helpers",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "commonjs",
   "dependencies": {
     "ethers": "^5.7.2"
