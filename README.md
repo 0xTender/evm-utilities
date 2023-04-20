@@ -14,6 +14,10 @@ npx tsx watch --tsconfig tsconfig.base.json ./packages/events-schema-generator/s
 
 Heisenberg-CLI
 
+```
+npm i -g 0xtender/heisenberg-cli
+```
+
 A cli for generative tools
 
 ```
