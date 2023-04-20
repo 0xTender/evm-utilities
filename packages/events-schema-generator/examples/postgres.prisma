@@ -20,13 +20,13 @@ model AccessControl {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    AdminModifiedAccessControl AdminModifiedAccessControl[]
-    OwnershipTransferredAccessControl OwnershipTransferredAccessControl[]
+    AdminModified_AccessControl AdminModified_AccessControl[]
+    OwnershipTransferred_AccessControl OwnershipTransferred_AccessControl[]
     
 }   
 
 
-model AdminModifiedAccessControl {
+model AdminModified_AccessControl {
     id      Int    @id @default(autoincrement())
     AccessControl AccessControl @relation(fields: [AccessControlId], references: [id])
     AccessControlId Int
@@ -36,13 +36,13 @@ model AdminModifiedAccessControl {
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    data AdminModifiedAccessControlEvent?
+    data AdminModified_AccessControl_Event?
 }
 
-model AdminModifiedAccessControlEvent {
+model AdminModified_AccessControl_Event {
     id      Int    @id @default(autoincrement())
-    AdminModifiedAccessControl AdminModifiedAccessControl @relation(fields: [AdminModifiedAccessControlId], references: [id])
-    AdminModifiedAccessControlId Int @unique
+    AdminModified_AccessControl AdminModified_AccessControl @relation(fields: [AdminModified_AccessControl_Id], references: [id])
+    AdminModified_AccessControl_Id Int @unique
     account String
     isAdmin String
     
@@ -51,7 +51,7 @@ model AdminModifiedAccessControlEvent {
 }
 
 
-model OwnershipTransferredAccessControl {
+model OwnershipTransferred_AccessControl {
     id      Int    @id @default(autoincrement())
     AccessControl AccessControl @relation(fields: [AccessControlId], references: [id])
     AccessControlId Int
@@ -61,13 +61,13 @@ model OwnershipTransferredAccessControl {
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    data OwnershipTransferredAccessControlEvent?
+    data OwnershipTransferred_AccessControl_Event?
 }
 
-model OwnershipTransferredAccessControlEvent {
+model OwnershipTransferred_AccessControl_Event {
     id      Int    @id @default(autoincrement())
-    OwnershipTransferredAccessControl OwnershipTransferredAccessControl @relation(fields: [OwnershipTransferredAccessControlId], references: [id])
-    OwnershipTransferredAccessControlId Int @unique
+    OwnershipTransferred_AccessControl OwnershipTransferred_AccessControl @relation(fields: [OwnershipTransferred_AccessControl_Id], references: [id])
+    OwnershipTransferred_AccessControl_Id Int @unique
     previousOwner String
     newOwner String
     
@@ -88,16 +88,16 @@ model Candy {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    AdminModifiedCandy AdminModifiedCandy[]
-    ApprovalCandy ApprovalCandy[]
-    ApprovalForAllCandy ApprovalForAllCandy[]
-    OwnershipTransferredCandy OwnershipTransferredCandy[]
-    TransferCandy TransferCandy[]
+    AdminModified_Candy AdminModified_Candy[]
+    Approval_Candy Approval_Candy[]
+    ApprovalForAll_Candy ApprovalForAll_Candy[]
+    OwnershipTransferred_Candy OwnershipTransferred_Candy[]
+    Transfer_Candy Transfer_Candy[]
     
 }   
 
 
-model AdminModifiedCandy {
+model AdminModified_Candy {
     id      Int    @id @default(autoincrement())
     Candy Candy @relation(fields: [CandyId], references: [id])
     CandyId Int
@@ -107,13 +107,13 @@ model AdminModifiedCandy {
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    data AdminModifiedCandyEvent?
+    data AdminModified_Candy_Event?
 }
 
-model AdminModifiedCandyEvent {
+model AdminModified_Candy_Event {
     id      Int    @id @default(autoincrement())
-    AdminModifiedCandy AdminModifiedCandy @relation(fields: [AdminModifiedCandyId], references: [id])
-    AdminModifiedCandyId Int @unique
+    AdminModified_Candy AdminModified_Candy @relation(fields: [AdminModified_Candy_Id], references: [id])
+    AdminModified_Candy_Id Int @unique
     account String
     isAdmin String
     
@@ -122,7 +122,7 @@ model AdminModifiedCandyEvent {
 }
 
 
-model ApprovalCandy {
+model Approval_Candy {
     id      Int    @id @default(autoincrement())
     Candy Candy @relation(fields: [CandyId], references: [id])
     CandyId Int
@@ -132,13 +132,13 @@ model ApprovalCandy {
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    data ApprovalCandyEvent?
+    data Approval_Candy_Event?
 }
 
-model ApprovalCandyEvent {
+model Approval_Candy_Event {
     id      Int    @id @default(autoincrement())
-    ApprovalCandy ApprovalCandy @relation(fields: [ApprovalCandyId], references: [id])
-    ApprovalCandyId Int @unique
+    Approval_Candy Approval_Candy @relation(fields: [Approval_Candy_Id], references: [id])
+    Approval_Candy_Id Int @unique
     owner String
     approved String
     tokenId String
@@ -148,7 +148,7 @@ model ApprovalCandyEvent {
 }
 
 
-model ApprovalForAllCandy {
+model ApprovalForAll_Candy {
     id      Int    @id @default(autoincrement())
     Candy Candy @relation(fields: [CandyId], references: [id])
     CandyId Int
@@ -158,13 +158,13 @@ model ApprovalForAllCandy {
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    data ApprovalForAllCandyEvent?
+    data ApprovalForAll_Candy_Event?
 }
 
-model ApprovalForAllCandyEvent {
+model ApprovalForAll_Candy_Event {
     id      Int    @id @default(autoincrement())
-    ApprovalForAllCandy ApprovalForAllCandy @relation(fields: [ApprovalForAllCandyId], references: [id])
-    ApprovalForAllCandyId Int @unique
+    ApprovalForAll_Candy ApprovalForAll_Candy @relation(fields: [ApprovalForAll_Candy_Id], references: [id])
+    ApprovalForAll_Candy_Id Int @unique
     owner String
     operator String
     approved String
@@ -174,7 +174,7 @@ model ApprovalForAllCandyEvent {
 }
 
 
-model OwnershipTransferredCandy {
+model OwnershipTransferred_Candy {
     id      Int    @id @default(autoincrement())
     Candy Candy @relation(fields: [CandyId], references: [id])
     CandyId Int
@@ -184,13 +184,13 @@ model OwnershipTransferredCandy {
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    data OwnershipTransferredCandyEvent?
+    data OwnershipTransferred_Candy_Event?
 }
 
-model OwnershipTransferredCandyEvent {
+model OwnershipTransferred_Candy_Event {
     id      Int    @id @default(autoincrement())
-    OwnershipTransferredCandy OwnershipTransferredCandy @relation(fields: [OwnershipTransferredCandyId], references: [id])
-    OwnershipTransferredCandyId Int @unique
+    OwnershipTransferred_Candy OwnershipTransferred_Candy @relation(fields: [OwnershipTransferred_Candy_Id], references: [id])
+    OwnershipTransferred_Candy_Id Int @unique
     previousOwner String
     newOwner String
     
@@ -199,7 +199,7 @@ model OwnershipTransferredCandyEvent {
 }
 
 
-model TransferCandy {
+model Transfer_Candy {
     id      Int    @id @default(autoincrement())
     Candy Candy @relation(fields: [CandyId], references: [id])
     CandyId Int
@@ -209,13 +209,13 @@ model TransferCandy {
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    data TransferCandyEvent?
+    data Transfer_Candy_Event?
 }
 
-model TransferCandyEvent {
+model Transfer_Candy_Event {
     id      Int    @id @default(autoincrement())
-    TransferCandy TransferCandy @relation(fields: [TransferCandyId], references: [id])
-    TransferCandyId Int @unique
+    Transfer_Candy Transfer_Candy @relation(fields: [Transfer_Candy_Id], references: [id])
+    Transfer_Candy_Id Int @unique
     from String
     to String
     tokenId String
@@ -237,13 +237,13 @@ model ActorFactory {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    AdminModifiedActorFactory AdminModifiedActorFactory[]
-    OwnershipTransferredActorFactory OwnershipTransferredActorFactory[]
+    AdminModified_ActorFactory AdminModified_ActorFactory[]
+    OwnershipTransferred_ActorFactory OwnershipTransferred_ActorFactory[]
     
 }   
 
 
-model AdminModifiedActorFactory {
+model AdminModified_ActorFactory {
     id      Int    @id @default(autoincrement())
     ActorFactory ActorFactory @relation(fields: [ActorFactoryId], references: [id])
     ActorFactoryId Int
@@ -253,13 +253,13 @@ model AdminModifiedActorFactory {
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    data AdminModifiedActorFactoryEvent?
+    data AdminModified_ActorFactory_Event?
 }
 
-model AdminModifiedActorFactoryEvent {
+model AdminModified_ActorFactory_Event {
     id      Int    @id @default(autoincrement())
-    AdminModifiedActorFactory AdminModifiedActorFactory @relation(fields: [AdminModifiedActorFactoryId], references: [id])
-    AdminModifiedActorFactoryId Int @unique
+    AdminModified_ActorFactory AdminModified_ActorFactory @relation(fields: [AdminModified_ActorFactory_Id], references: [id])
+    AdminModified_ActorFactory_Id Int @unique
     account String
     isAdmin String
     
@@ -268,7 +268,7 @@ model AdminModifiedActorFactoryEvent {
 }
 
 
-model OwnershipTransferredActorFactory {
+model OwnershipTransferred_ActorFactory {
     id      Int    @id @default(autoincrement())
     ActorFactory ActorFactory @relation(fields: [ActorFactoryId], references: [id])
     ActorFactoryId Int
@@ -278,13 +278,13 @@ model OwnershipTransferredActorFactory {
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    data OwnershipTransferredActorFactoryEvent?
+    data OwnershipTransferred_ActorFactory_Event?
 }
 
-model OwnershipTransferredActorFactoryEvent {
+model OwnershipTransferred_ActorFactory_Event {
     id      Int    @id @default(autoincrement())
-    OwnershipTransferredActorFactory OwnershipTransferredActorFactory @relation(fields: [OwnershipTransferredActorFactoryId], references: [id])
-    OwnershipTransferredActorFactoryId Int @unique
+    OwnershipTransferred_ActorFactory OwnershipTransferred_ActorFactory @relation(fields: [OwnershipTransferred_ActorFactory_Id], references: [id])
+    OwnershipTransferred_ActorFactory_Id Int @unique
     previousOwner String
     newOwner String
     
@@ -305,16 +305,16 @@ model Registry {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    AdminModifiedRegistry AdminModifiedRegistry[]
-    ChangeActorStateRegistry ChangeActorStateRegistry[]
-    FactoryAddressChangedRegistry FactoryAddressChangedRegistry[]
-    OwnershipTransferredRegistry OwnershipTransferredRegistry[]
-    RegisterActorRegistry RegisterActorRegistry[]
+    AdminModified_Registry AdminModified_Registry[]
+    ChangeActorState_Registry ChangeActorState_Registry[]
+    FactoryAddressChanged_Registry FactoryAddressChanged_Registry[]
+    OwnershipTransferred_Registry OwnershipTransferred_Registry[]
+    RegisterActor_Registry RegisterActor_Registry[]
     
 }   
 
 
-model AdminModifiedRegistry {
+model AdminModified_Registry {
     id      Int    @id @default(autoincrement())
     Registry Registry @relation(fields: [RegistryId], references: [id])
     RegistryId Int
@@ -324,13 +324,13 @@ model AdminModifiedRegistry {
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    data AdminModifiedRegistryEvent?
+    data AdminModified_Registry_Event?
 }
 
-model AdminModifiedRegistryEvent {
+model AdminModified_Registry_Event {
     id      Int    @id @default(autoincrement())
-    AdminModifiedRegistry AdminModifiedRegistry @relation(fields: [AdminModifiedRegistryId], references: [id])
-    AdminModifiedRegistryId Int @unique
+    AdminModified_Registry AdminModified_Registry @relation(fields: [AdminModified_Registry_Id], references: [id])
+    AdminModified_Registry_Id Int @unique
     account String
     isAdmin String
     
@@ -339,7 +339,7 @@ model AdminModifiedRegistryEvent {
 }
 
 
-model ChangeActorStateRegistry {
+model ChangeActorState_Registry {
     id      Int    @id @default(autoincrement())
     Registry Registry @relation(fields: [RegistryId], references: [id])
     RegistryId Int
@@ -349,13 +349,13 @@ model ChangeActorStateRegistry {
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    data ChangeActorStateRegistryEvent?
+    data ChangeActorState_Registry_Event?
 }
 
-model ChangeActorStateRegistryEvent {
+model ChangeActorState_Registry_Event {
     id      Int    @id @default(autoincrement())
-    ChangeActorStateRegistry ChangeActorStateRegistry @relation(fields: [ChangeActorStateRegistryId], references: [id])
-    ChangeActorStateRegistryId Int @unique
+    ChangeActorState_Registry ChangeActorState_Registry @relation(fields: [ChangeActorState_Registry_Id], references: [id])
+    ChangeActorState_Registry_Id Int @unique
     actorAddress String
     state String
     
@@ -364,7 +364,7 @@ model ChangeActorStateRegistryEvent {
 }
 
 
-model FactoryAddressChangedRegistry {
+model FactoryAddressChanged_Registry {
     id      Int    @id @default(autoincrement())
     Registry Registry @relation(fields: [RegistryId], references: [id])
     RegistryId Int
@@ -374,13 +374,13 @@ model FactoryAddressChangedRegistry {
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    data FactoryAddressChangedRegistryEvent?
+    data FactoryAddressChanged_Registry_Event?
 }
 
-model FactoryAddressChangedRegistryEvent {
+model FactoryAddressChanged_Registry_Event {
     id      Int    @id @default(autoincrement())
-    FactoryAddressChangedRegistry FactoryAddressChangedRegistry @relation(fields: [FactoryAddressChangedRegistryId], references: [id])
-    FactoryAddressChangedRegistryId Int @unique
+    FactoryAddressChanged_Registry FactoryAddressChanged_Registry @relation(fields: [FactoryAddressChanged_Registry_Id], references: [id])
+    FactoryAddressChanged_Registry_Id Int @unique
     factoryAddress String
     
     createdAt DateTime @default(now())
@@ -388,7 +388,7 @@ model FactoryAddressChangedRegistryEvent {
 }
 
 
-model OwnershipTransferredRegistry {
+model OwnershipTransferred_Registry {
     id      Int    @id @default(autoincrement())
     Registry Registry @relation(fields: [RegistryId], references: [id])
     RegistryId Int
@@ -398,13 +398,13 @@ model OwnershipTransferredRegistry {
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    data OwnershipTransferredRegistryEvent?
+    data OwnershipTransferred_Registry_Event?
 }
 
-model OwnershipTransferredRegistryEvent {
+model OwnershipTransferred_Registry_Event {
     id      Int    @id @default(autoincrement())
-    OwnershipTransferredRegistry OwnershipTransferredRegistry @relation(fields: [OwnershipTransferredRegistryId], references: [id])
-    OwnershipTransferredRegistryId Int @unique
+    OwnershipTransferred_Registry OwnershipTransferred_Registry @relation(fields: [OwnershipTransferred_Registry_Id], references: [id])
+    OwnershipTransferred_Registry_Id Int @unique
     previousOwner String
     newOwner String
     
@@ -413,7 +413,7 @@ model OwnershipTransferredRegistryEvent {
 }
 
 
-model RegisterActorRegistry {
+model RegisterActor_Registry {
     id      Int    @id @default(autoincrement())
     Registry Registry @relation(fields: [RegistryId], references: [id])
     RegistryId Int
@@ -423,13 +423,13 @@ model RegisterActorRegistry {
     logIndex Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    data RegisterActorRegistryEvent?
+    data RegisterActor_Registry_Event?
 }
 
-model RegisterActorRegistryEvent {
+model RegisterActor_Registry_Event {
     id      Int    @id @default(autoincrement())
-    RegisterActorRegistry RegisterActorRegistry @relation(fields: [RegisterActorRegistryId], references: [id])
-    RegisterActorRegistryId Int @unique
+    RegisterActor_Registry RegisterActor_Registry @relation(fields: [RegisterActor_Registry_Id], references: [id])
+    RegisterActor_Registry_Id Int @unique
     actorAddress String
     
     createdAt DateTime @default(now())
