@@ -11,8 +11,12 @@ import * as devkit from '@nrwl/devkit';
 import { execSync } from 'child_process';
 import { readFileSync, writeFileSync } from 'fs';
 import chalk from 'chalk';
+import { join } from 'path';
 
-function invariant(condition, message) {
+function invariant(
+  condition: string | boolean | devkit.ProjectGraphProjectNode,
+  message: unknown
+) {
   if (!condition) {
     console.error(chalk.bold.red(message));
     process.exit(1);
@@ -21,7 +25,23 @@ function invariant(condition, message) {
 
 // Executing publish script: node path/to/publish.mjs {name} --version {version} --tag {tag}
 // Default "tag" to "next" so we won't publish the "latest" tag by accident.
-const [, , name, version, tag = 'latest', access = 'private'] = process.argv;
+let [, , name, version, tag = 'latest', access = 'private'] = process.argv;
+const parentRoot = join(
+  __dirname,
+  '..',
+  '..',
+  'packages',
+  name,
+  'package.json'
+);
+
+if (version === undefined) {
+  version = JSON.parse(readFileSync(parentRoot).toString()).version;
+} else {
+  const json = JSON.parse(readFileSync(parentRoot).toString());
+  json.version = version;
+  writeFileSync(parentRoot, JSON.stringify(json, null, 2));
+}
 
 if (name === 'events-schema-generator') {
   // execute a shell command
@@ -30,7 +50,6 @@ if (name === 'events-schema-generator') {
   );
 }
 
-console.log({ name, version, tag });
 // A simple SemVer validation to validate the version
 const validVersion = /^\d+\.\d+\.\d+(-\w+\.\d+)?/;
 invariant(
@@ -38,7 +57,7 @@ invariant(
   `No version provided or version did not match Semantic Versioning, expected: #.#.#-tag.# or #.#.#, got ${version}.`
 );
 
-const graph = devkit.default.readCachedProjectGraph();
+const graph = devkit.readCachedProjectGraph();
 const project = graph.nodes[name];
 
 invariant(
