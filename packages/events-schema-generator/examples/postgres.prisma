@@ -27,7 +27,7 @@ model Contract_pm {
 }
 
 model Event_pm {
-  id          Int         @id @default(autoincrement())
+  id          String      @id
   Contract_pm Contract_pm @relation(fields: [ContractId], references: [id])
   ContractId  Int
 
@@ -49,79 +49,79 @@ model Event_pm {
 }
 
 model E_Transfer_Avalanche {
-  id       Int       @id @default(autoincrement())
-  Event_pm Event_pm? @relation(fields: [eventId], references: [id])
-  eventId  Int?      @unique
+  id       Int      @id @default(autoincrement())
+  Event_pm Event_pm @relation(fields: [eventId], references: [id])
+  eventId  String   @unique
 
-  A_from String
+  A_from String @db.VarChar(1000)
 
-  A_to String
+  A_to String @db.VarChar(1000)
 
-  A_value String
+  A_value String @db.VarChar(1000)
 
-  A_data String
+  A_data String @db.VarChar(1000)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model E_Approval_Avalanche {
-  id       Int       @id @default(autoincrement())
-  Event_pm Event_pm? @relation(fields: [eventId], references: [id])
-  eventId  Int?      @unique
+  id       Int      @id @default(autoincrement())
+  Event_pm Event_pm @relation(fields: [eventId], references: [id])
+  eventId  String   @unique
 
-  A_owner String
+  A_owner String @db.VarChar(1000)
 
-  A_spender String
+  A_spender String @db.VarChar(1000)
 
-  A_value String
+  A_value String @db.VarChar(1000)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model E_OrderFilledRFQ_RandomUniswap {
-  id       Int       @id @default(autoincrement())
-  Event_pm Event_pm? @relation(fields: [eventId], references: [id])
-  eventId  Int?      @unique
+  id       Int      @id @default(autoincrement())
+  Event_pm Event_pm @relation(fields: [eventId], references: [id])
+  eventId  String   @unique
 
-  A_orderHash String
+  A_orderHash String @db.VarChar(1000)
 
-  A_makingAmount String
+  A_makingAmount String @db.VarChar(1000)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model E_OwnershipTransferred_RandomUniswap {
-  id       Int       @id @default(autoincrement())
-  Event_pm Event_pm? @relation(fields: [eventId], references: [id])
-  eventId  Int?      @unique
+  id       Int      @id @default(autoincrement())
+  Event_pm Event_pm @relation(fields: [eventId], references: [id])
+  eventId  String   @unique
 
-  A_previousOwner String
+  A_previousOwner String @db.VarChar(1000)
 
-  A_newOwner String
+  A_newOwner String @db.VarChar(1000)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model E_Swapped_RandomUniswap {
-  id       Int       @id @default(autoincrement())
-  Event_pm Event_pm? @relation(fields: [eventId], references: [id])
-  eventId  Int?      @unique
+  id       Int      @id @default(autoincrement())
+  Event_pm Event_pm @relation(fields: [eventId], references: [id])
+  eventId  String   @unique
 
-  A_sender String
+  A_sender String @db.VarChar(1000)
 
-  A_srcToken String
+  A_srcToken String @db.VarChar(1000)
 
-  A_dstToken String
+  A_dstToken String @db.VarChar(1000)
 
-  A_dstReceiver String
+  A_dstReceiver String @db.VarChar(1000)
 
-  A_spentAmount String
+  A_spentAmount String @db.VarChar(1000)
 
-  A_returnAmount String
+  A_returnAmount String @db.VarChar(1000)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

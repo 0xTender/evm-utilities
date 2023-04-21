@@ -20,8 +20,8 @@ model Contract_pm {
 
 
 model Event_pm {
-    id                Int      @id @default(autoincrement())
-    Contract_pm        Contract_pm @relation(fields: [ContractId], references: [id])
+    id                String      @id 
+    Contract_pm       Contract_pm @relation(fields: [ContractId], references: [id])
     ContractId        Int
 
     block             Int
@@ -39,11 +39,11 @@ model Event_pm {
 {% for event in events %}
 model E_{{-event.name}}_{{event.contract_name}} {
     id        Int    @id @default(autoincrement())
-    Event_pm   Event_pm? @relation(fields: [eventId], references: [id])
-    eventId Int?   @unique
+    Event_pm   Event_pm @relation(fields: [eventId], references: [id])
+    eventId    String   @unique
 
     {% for arg in event.inputs %}
-    A_{{arg.name}} String
+    A_{{arg.name}} String @db.VarChar(1000)
     {% endfor %}
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
