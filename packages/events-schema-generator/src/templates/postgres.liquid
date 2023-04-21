@@ -1,4 +1,4 @@
-model Contract {
+model Contract_pm {
     id      Int    @id @default(autoincrement())
     
     name String
@@ -7,19 +7,19 @@ model Contract {
     chainId Int
     transactionHash String
 
-    deploymentBlock  Int
+    initBlock  Int
     indexedTillBlock Int
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    Event     Event[]
+    Event_pm     Event_pm[]
 
 }   
 
 
-model Event {
+model Event_pm {
     id                Int      @id @default(autoincrement())
-    Contract          Contract @relation(fields: [ContractId], references: [id])
+    Contract_pm        Contract_pm @relation(fields: [ContractId], references: [id])
     ContractId        Int
 
     block             Int
@@ -36,8 +36,8 @@ model Event {
 
 {% for event in events %}
 model E_{{-event.name}}_{{event.contract_name}} {
-    id      Int    @id @default(autoincrement())
-    Event   Event? @relation(fields: [eventId], references: [id])
+    id        Int    @id @default(autoincrement())
+    Event_pm   Event_pm? @relation(fields: [eventId], references: [id])
     eventId Int?   @unique
 
     {% for arg in event.inputs %}

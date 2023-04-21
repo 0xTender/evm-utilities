@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["aniketchowdhury"]
+  "cSpell.words": ["aniketchowdhury"],
+  "dotenv.enableAutocloaking": false
 }

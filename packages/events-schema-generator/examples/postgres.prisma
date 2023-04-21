@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Contract {
+model Contract_pm {
   id Int @id @default(autoincrement())
 
   name String
@@ -16,18 +16,18 @@ model Contract {
   chainId         Int
   transactionHash String
 
-  deploymentBlock  Int
+  initBlock        Int
   indexedTillBlock Int
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Event     Event[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Event_pm  Event_pm[]
 }
 
-model Event {
-  id         Int      @id @default(autoincrement())
-  Contract   Contract @relation(fields: [ContractId], references: [id])
-  ContractId Int
+model Event_pm {
+  id          Int         @id @default(autoincrement())
+  Contract_pm Contract_pm @relation(fields: [ContractId], references: [id])
+  ContractId  Int
 
   block           Int
   transactionHash String
@@ -35,17 +35,38 @@ model Event {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  E_OwnershipTransferred_Ownable E_OwnershipTransferred_Ownable[]
+  E_Transfer_Avalanche E_Transfer_Avalanche[]
+
+  E_Approval_Avalanche E_Approval_Avalanche[]
 }
 
-model E_OwnershipTransferred_Ownable {
-  id      Int    @id @default(autoincrement())
-  Event   Event? @relation(fields: [eventId], references: [id])
-  eventId Int?   @unique
+model E_Transfer_Avalanche {
+  id       Int       @id @default(autoincrement())
+  Event_pm Event_pm? @relation(fields: [eventId], references: [id])
+  eventId  Int?      @unique
 
-  A_previousOwner String
+  A_from String
 
-  A_newOwner String
+  A_to String
+
+  A_value String
+
+  A_data String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model E_Approval_Avalanche {
+  id       Int       @id @default(autoincrement())
+  Event_pm Event_pm? @relation(fields: [eventId], references: [id])
+  eventId  Int?      @unique
+
+  A_owner String
+
+  A_spender String
+
+  A_value String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

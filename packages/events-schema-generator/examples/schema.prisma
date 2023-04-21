@@ -17,7 +17,7 @@ model Candy {
     chainId         Int
     transactionHash String
 
-    deploymentBlock  Int
+    initBlock        Int
     indexedTillBlock Int
 
     createdAt DateTime @default(now())
