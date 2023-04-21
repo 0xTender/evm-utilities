@@ -6,7 +6,7 @@ import {
 } from '@0xtender/evm-helpers/src';
 
 
-const batchSize = 500;
+const batchSize = 1000;
 
 const prisma = new PrismaClient();
 

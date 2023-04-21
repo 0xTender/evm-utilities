@@ -6,7 +6,7 @@ import {
 } from '@0xtender/evm-helpers/src';
 
 
-const batchSize = 500;
+const batchSize = 1000;
 
 const prisma = new PrismaClient();
 
@@ -72,7 +72,7 @@ const migrate = async () => {
 
     await Promise.all(promises);
 
-    console.log(`Running again... in 10 seconds...`);
+    console.log(`Running again... in 10_000 miliseconds...`);
     setTimeout(async () => {
       await run();
     }, 10_000);

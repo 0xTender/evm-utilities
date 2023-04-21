@@ -81,11 +81,11 @@ export const fetch_transactions_for_contract = async (
     } else {
       currentIndexTill = latestBlock;
     }
-    console.log({
-      currentIndexTill,
-      latestBlock,
-      pendingBlocks: latestBlock - currentIndexTill,
-    });
+    console.log(
+      `pendingBlocks(${contract_pm.name}): ${
+        currentIndexTill - indexedTillBlock
+      }`
+    );
 
     const promises: Promise<any>[] = [];
 
@@ -151,8 +151,8 @@ export const fetch_transactions_for_contract = async (
             };
           });
 
-          console.log(
-            `Found events for ${event_changed_name}: ${queryData.length}`
+          console.warn(
+            `Found events for ${event_changed_name} [${contract_pm.name}]: ${queryData.length}`
           );
           const event_entry = entry.map((e) => e.event_entry);
 
