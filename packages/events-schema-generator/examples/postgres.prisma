@@ -40,6 +40,12 @@ model Event_pm {
   E_Transfer_Avalanche E_Transfer_Avalanche[]
 
   E_Approval_Avalanche E_Approval_Avalanche[]
+
+  E_OrderFilledRFQ_RandomUniswap E_OrderFilledRFQ_RandomUniswap[]
+
+  E_OwnershipTransferred_RandomUniswap E_OwnershipTransferred_RandomUniswap[]
+
+  E_Swapped_RandomUniswap E_Swapped_RandomUniswap[]
 }
 
 model E_Transfer_Avalanche {
@@ -69,6 +75,53 @@ model E_Approval_Avalanche {
   A_spender String
 
   A_value String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model E_OrderFilledRFQ_RandomUniswap {
+  id       Int       @id @default(autoincrement())
+  Event_pm Event_pm? @relation(fields: [eventId], references: [id])
+  eventId  Int?      @unique
+
+  A_orderHash String
+
+  A_makingAmount String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model E_OwnershipTransferred_RandomUniswap {
+  id       Int       @id @default(autoincrement())
+  Event_pm Event_pm? @relation(fields: [eventId], references: [id])
+  eventId  Int?      @unique
+
+  A_previousOwner String
+
+  A_newOwner String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model E_Swapped_RandomUniswap {
+  id       Int       @id @default(autoincrement())
+  Event_pm Event_pm? @relation(fields: [eventId], references: [id])
+  eventId  Int?      @unique
+
+  A_sender String
+
+  A_srcToken String
+
+  A_dstToken String
+
+  A_dstReceiver String
+
+  A_spentAmount String
+
+  A_returnAmount String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
