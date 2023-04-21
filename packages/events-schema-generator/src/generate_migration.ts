@@ -7,6 +7,7 @@ export const generate_migration = async <T extends Contract>(
     instance: T;
     transactionHash: string;
     name: string;
+    abiPath: string;
   }[],
   extension_name: keyof typeof renderers
 ) => {
@@ -17,7 +18,8 @@ export const generate_migration = async <T extends Contract>(
       await get_contract_metadata(
         contract.instance,
         contract.transactionHash,
-        contract.name
+        contract.name,
+        contract.abiPath
       )
     );
   }
@@ -33,10 +35,19 @@ export const generate_migration = async <T extends Contract>(
       }))
     );
   }
-  console.log(events);
 
   const rendered = await renderer(extension_name, 'migration', {
     events,
+    contracts: metadata
+      .map((e) => ({
+        chainId: e.chainId,
+        initBlock: 1,
+        name: e.contractName,
+        address: e.address,
+        transactionHash: e.transactionHash,
+        abiPath: e.abiPath,
+      }))
+      .map((e) => JSON.stringify(e, undefined, 4)),
   });
 
   return rendered;

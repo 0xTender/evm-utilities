@@ -7,6 +7,7 @@ export const generate_events_schema = async <T extends Contract>(
     instance: T;
     transactionHash: string;
     name: string;
+    abiPath: string;
   }[],
   extension_name: keyof typeof renderers,
   init_template?: string
@@ -18,7 +19,8 @@ export const generate_events_schema = async <T extends Contract>(
       await get_contract_metadata(
         contract.instance,
         contract.transactionHash,
-        contract.name
+        contract.name,
+        contract.abiPath
       )
     );
   }

@@ -23,6 +23,7 @@ export const get_contract_metadata = async <T extends Contract>(
   contract: T,
   transactionHash: string,
   contractName: string,
+  abiPath: string,
   strict = false
 ) => {
   const provider = contract.provider;
@@ -44,11 +45,13 @@ export const get_contract_metadata = async <T extends Contract>(
   }
 
   return {
+    address: contract.address,
     events,
     chainId,
     latestBlock,
     transactionHash,
     contractName,
     contract,
+    abiPath,
   };
 };

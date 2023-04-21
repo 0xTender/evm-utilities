@@ -26,8 +26,14 @@ const contracts: {
   transactionHash: string;
   name: string;
   rpc: string;
+  abiPath: string;
 }[] = contracts_arr.map((e) => {
-  return { ...e, ...JSON.parse(readFileSync(e.path).toString()), name: e.name };
+  return {
+    ...e,
+    ...JSON.parse(readFileSync(e.path).toString()),
+    name: e.name,
+    abiPath: e.path,
+  };
 });
 
 const main = async () => {

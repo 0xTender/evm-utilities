@@ -33,7 +33,14 @@ const get_provider = (chainId: number | string) => {
   return provider;
 };
 
-const contracts_arr = [
+const contracts_arr: {
+  chainId: number;
+  initBlock: number;
+  name: string;
+  address: string;
+  transactionHash: string;
+  abiPath: string;
+}[] = [
   {
     chainId: 137,
     initBlock: 41788917,

@@ -97,6 +97,7 @@ program
             provider,
             instance: get_contract(data.address, data.abi),
             name: contract.name,
+            abiPath: contract.path,
           },
         });
       }
