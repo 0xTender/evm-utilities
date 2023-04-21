@@ -1,9 +1,10 @@
 import { generate_events_schema } from './index';
 import { readFileSync, writeFileSync } from 'fs';
-import { get_contract, get_json_rpc_provider } from '@0xtender/evm-helpers';
+import { get_contract } from '@0xtender/evm-helpers';
 
 import { join } from 'path';
 import { homedir } from 'os';
+import { execSync } from 'child_process';
 
 const home = homedir();
 
@@ -29,18 +30,19 @@ const contracts: {
 });
 
 const main = async () => {
-  const provider = get_json_rpc_provider('http://127.0.0.1:8545');
-
   const contract_metadata = contracts.map((contract) => {
     return {
       ...contract,
-      instance: get_contract(contract.address, contract.abi, provider),
+      instance: get_contract(contract.address, contract.abi),
     };
   });
 
   const rendered = await generate_events_schema(contract_metadata, 'postgres');
 
   writeFileSync(join(__dirname, '..', 'examples', 'postgres.prisma'), rendered);
+  execSync('npm run dev:generate', {
+    cwd: join(__dirname, '..'),
+  });
 };
 
 main().catch(console.error);

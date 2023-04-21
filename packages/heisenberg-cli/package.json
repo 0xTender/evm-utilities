@@ -1,6 +1,6 @@
 {
   "name": "@0xtender/heisenberg-cli",
-  "version": "0.0.14",
+  "version": "0.0.14-beta",
   "type": "commonjs",
   "bin": {
     "0xtender-heisenberg": "./src/lib/heisenberg.js"

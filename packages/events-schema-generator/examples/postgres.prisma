@@ -1,4 +1,3 @@
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["multiSchema"]
@@ -7,433 +6,178 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-model AccessControl {
-    id      Int    @id @default(autoincrement())
-    address String
-    chainId Int
-    transactionHash String
-
-    deploymentBlock  Int
-    indexedTillBlock Int
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    AdminModified_AccessControl AdminModified_AccessControl[]
-    OwnershipTransferred_AccessControl OwnershipTransferred_AccessControl[]
-    
-}   
-
-
-model AdminModified_AccessControl {
-    id      Int    @id @default(autoincrement())
-    AccessControl AccessControl @relation(fields: [AccessControlId], references: [id])
-    AccessControlId Int
-
-    block   Int
-    transactionHash String
-    logIndex Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    data AdminModified_AccessControl_Event?
+  schemas  = ["contract", "event"]
 }
 
-model AdminModified_AccessControl_Event {
-    id      Int    @id @default(autoincrement())
-    AdminModified_AccessControl AdminModified_AccessControl @relation(fields: [AdminModified_AccessControl_Id], references: [id])
-    AdminModified_AccessControl_Id Int @unique
-    account String
-    isAdmin String
-    
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model Contract {
+  id Int @id @default(autoincrement())
+
+  name String
+
+  address         String
+  chainId         Int
+  transactionHash String
+
+  deploymentBlock  Int
+  indexedTillBlock Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Event     Event[]
+
+  @@schema("contract")
 }
 
+model Event {
+  id         Int      @id @default(autoincrement())
+  Contract   Contract @relation(fields: [ContractId], references: [id])
+  ContractId Int
 
-model OwnershipTransferred_AccessControl {
-    id      Int    @id @default(autoincrement())
-    AccessControl AccessControl @relation(fields: [AccessControlId], references: [id])
-    AccessControlId Int
+  block           Int
+  transactionHash String
+  logIndex        Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-    block   Int
-    transactionHash String
-    logIndex Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    data OwnershipTransferred_AccessControl_Event?
+  E_AdminModified_AccessControl E_AdminModified_AccessControl[]
+
+  E_OwnershipTransferred_AccessControl E_OwnershipTransferred_AccessControl[]
+
+  E_AdminModified_Candy E_AdminModified_Candy[]
+
+  E_Approval_Candy E_Approval_Candy[]
+
+  E_ApprovalForAll_Candy E_ApprovalForAll_Candy[]
+
+  E_OwnershipTransferred_Candy E_OwnershipTransferred_Candy[]
+
+  E_Transfer_Candy E_Transfer_Candy[]
+
+  E_AdminModified_ActorFactory E_AdminModified_ActorFactory[]
+
+  E_OwnershipTransferred_ActorFactory E_OwnershipTransferred_ActorFactory[]
+
+  E_AdminModified_Registry E_AdminModified_Registry[]
+
+  E_ChangeActorState_Registry E_ChangeActorState_Registry[]
+
+  E_FactoryAddressChanged_Registry E_FactoryAddressChanged_Registry[]
+
+  E_OwnershipTransferred_Registry E_OwnershipTransferred_Registry[]
+
+  E_RegisterActor_Registry E_RegisterActor_Registry[]
+
+  @@schema("event")
 }
 
-model OwnershipTransferred_AccessControl_Event {
-    id      Int    @id @default(autoincrement())
-    OwnershipTransferred_AccessControl OwnershipTransferred_AccessControl @relation(fields: [OwnershipTransferred_AccessControl_Id], references: [id])
-    OwnershipTransferred_AccessControl_Id Int @unique
-    previousOwner String
-    newOwner String
-    
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model E_AdminModified_AccessControl {
+  id      Int    @id @default(autoincrement())
+  Event   Event? @relation(fields: [eventId], references: [id])
+  eventId Int?   @unique
+
+  @@schema("event")
 }
 
+model E_OwnershipTransferred_AccessControl {
+  id      Int    @id @default(autoincrement())
+  Event   Event? @relation(fields: [eventId], references: [id])
+  eventId Int?   @unique
 
-model Candy {
-    id      Int    @id @default(autoincrement())
-    address String
-    chainId Int
-    transactionHash String
-
-    deploymentBlock  Int
-    indexedTillBlock Int
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    AdminModified_Candy AdminModified_Candy[]
-    Approval_Candy Approval_Candy[]
-    ApprovalForAll_Candy ApprovalForAll_Candy[]
-    OwnershipTransferred_Candy OwnershipTransferred_Candy[]
-    Transfer_Candy Transfer_Candy[]
-    
-}   
-
-
-model AdminModified_Candy {
-    id      Int    @id @default(autoincrement())
-    Candy Candy @relation(fields: [CandyId], references: [id])
-    CandyId Int
-
-    block   Int
-    transactionHash String
-    logIndex Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    data AdminModified_Candy_Event?
+  @@schema("event")
 }
 
-model AdminModified_Candy_Event {
-    id      Int    @id @default(autoincrement())
-    AdminModified_Candy AdminModified_Candy @relation(fields: [AdminModified_Candy_Id], references: [id])
-    AdminModified_Candy_Id Int @unique
-    account String
-    isAdmin String
-    
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model E_AdminModified_Candy {
+  id      Int    @id @default(autoincrement())
+  Event   Event? @relation(fields: [eventId], references: [id])
+  eventId Int?   @unique
+
+  @@schema("event")
 }
 
+model E_Approval_Candy {
+  id      Int    @id @default(autoincrement())
+  Event   Event? @relation(fields: [eventId], references: [id])
+  eventId Int?   @unique
 
-model Approval_Candy {
-    id      Int    @id @default(autoincrement())
-    Candy Candy @relation(fields: [CandyId], references: [id])
-    CandyId Int
-
-    block   Int
-    transactionHash String
-    logIndex Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    data Approval_Candy_Event?
+  @@schema("event")
 }
 
-model Approval_Candy_Event {
-    id      Int    @id @default(autoincrement())
-    Approval_Candy Approval_Candy @relation(fields: [Approval_Candy_Id], references: [id])
-    Approval_Candy_Id Int @unique
-    owner String
-    approved String
-    tokenId String
-    
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model E_ApprovalForAll_Candy {
+  id      Int    @id @default(autoincrement())
+  Event   Event? @relation(fields: [eventId], references: [id])
+  eventId Int?   @unique
+
+  @@schema("event")
 }
 
+model E_OwnershipTransferred_Candy {
+  id      Int    @id @default(autoincrement())
+  Event   Event? @relation(fields: [eventId], references: [id])
+  eventId Int?   @unique
 
-model ApprovalForAll_Candy {
-    id      Int    @id @default(autoincrement())
-    Candy Candy @relation(fields: [CandyId], references: [id])
-    CandyId Int
-
-    block   Int
-    transactionHash String
-    logIndex Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    data ApprovalForAll_Candy_Event?
+  @@schema("event")
 }
 
-model ApprovalForAll_Candy_Event {
-    id      Int    @id @default(autoincrement())
-    ApprovalForAll_Candy ApprovalForAll_Candy @relation(fields: [ApprovalForAll_Candy_Id], references: [id])
-    ApprovalForAll_Candy_Id Int @unique
-    owner String
-    operator String
-    approved String
-    
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model E_Transfer_Candy {
+  id      Int    @id @default(autoincrement())
+  Event   Event? @relation(fields: [eventId], references: [id])
+  eventId Int?   @unique
+
+  @@schema("event")
 }
 
+model E_AdminModified_ActorFactory {
+  id      Int    @id @default(autoincrement())
+  Event   Event? @relation(fields: [eventId], references: [id])
+  eventId Int?   @unique
 
-model OwnershipTransferred_Candy {
-    id      Int    @id @default(autoincrement())
-    Candy Candy @relation(fields: [CandyId], references: [id])
-    CandyId Int
-
-    block   Int
-    transactionHash String
-    logIndex Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    data OwnershipTransferred_Candy_Event?
+  @@schema("event")
 }
 
-model OwnershipTransferred_Candy_Event {
-    id      Int    @id @default(autoincrement())
-    OwnershipTransferred_Candy OwnershipTransferred_Candy @relation(fields: [OwnershipTransferred_Candy_Id], references: [id])
-    OwnershipTransferred_Candy_Id Int @unique
-    previousOwner String
-    newOwner String
-    
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model E_OwnershipTransferred_ActorFactory {
+  id      Int    @id @default(autoincrement())
+  Event   Event? @relation(fields: [eventId], references: [id])
+  eventId Int?   @unique
+
+  @@schema("event")
 }
 
+model E_AdminModified_Registry {
+  id      Int    @id @default(autoincrement())
+  Event   Event? @relation(fields: [eventId], references: [id])
+  eventId Int?   @unique
 
-model Transfer_Candy {
-    id      Int    @id @default(autoincrement())
-    Candy Candy @relation(fields: [CandyId], references: [id])
-    CandyId Int
-
-    block   Int
-    transactionHash String
-    logIndex Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    data Transfer_Candy_Event?
+  @@schema("event")
 }
 
-model Transfer_Candy_Event {
-    id      Int    @id @default(autoincrement())
-    Transfer_Candy Transfer_Candy @relation(fields: [Transfer_Candy_Id], references: [id])
-    Transfer_Candy_Id Int @unique
-    from String
-    to String
-    tokenId String
-    
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model E_ChangeActorState_Registry {
+  id      Int    @id @default(autoincrement())
+  Event   Event? @relation(fields: [eventId], references: [id])
+  eventId Int?   @unique
+
+  @@schema("event")
 }
 
+model E_FactoryAddressChanged_Registry {
+  id      Int    @id @default(autoincrement())
+  Event   Event? @relation(fields: [eventId], references: [id])
+  eventId Int?   @unique
 
-model ActorFactory {
-    id      Int    @id @default(autoincrement())
-    address String
-    chainId Int
-    transactionHash String
-
-    deploymentBlock  Int
-    indexedTillBlock Int
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    AdminModified_ActorFactory AdminModified_ActorFactory[]
-    OwnershipTransferred_ActorFactory OwnershipTransferred_ActorFactory[]
-    
-}   
-
-
-model AdminModified_ActorFactory {
-    id      Int    @id @default(autoincrement())
-    ActorFactory ActorFactory @relation(fields: [ActorFactoryId], references: [id])
-    ActorFactoryId Int
-
-    block   Int
-    transactionHash String
-    logIndex Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    data AdminModified_ActorFactory_Event?
+  @@schema("event")
 }
 
-model AdminModified_ActorFactory_Event {
-    id      Int    @id @default(autoincrement())
-    AdminModified_ActorFactory AdminModified_ActorFactory @relation(fields: [AdminModified_ActorFactory_Id], references: [id])
-    AdminModified_ActorFactory_Id Int @unique
-    account String
-    isAdmin String
-    
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model E_OwnershipTransferred_Registry {
+  id      Int    @id @default(autoincrement())
+  Event   Event? @relation(fields: [eventId], references: [id])
+  eventId Int?   @unique
+
+  @@schema("event")
 }
 
+model E_RegisterActor_Registry {
+  id      Int    @id @default(autoincrement())
+  Event   Event? @relation(fields: [eventId], references: [id])
+  eventId Int?   @unique
 
-model OwnershipTransferred_ActorFactory {
-    id      Int    @id @default(autoincrement())
-    ActorFactory ActorFactory @relation(fields: [ActorFactoryId], references: [id])
-    ActorFactoryId Int
-
-    block   Int
-    transactionHash String
-    logIndex Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    data OwnershipTransferred_ActorFactory_Event?
+  @@schema("event")
 }
-
-model OwnershipTransferred_ActorFactory_Event {
-    id      Int    @id @default(autoincrement())
-    OwnershipTransferred_ActorFactory OwnershipTransferred_ActorFactory @relation(fields: [OwnershipTransferred_ActorFactory_Id], references: [id])
-    OwnershipTransferred_ActorFactory_Id Int @unique
-    previousOwner String
-    newOwner String
-    
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-
-model Registry {
-    id      Int    @id @default(autoincrement())
-    address String
-    chainId Int
-    transactionHash String
-
-    deploymentBlock  Int
-    indexedTillBlock Int
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    AdminModified_Registry AdminModified_Registry[]
-    ChangeActorState_Registry ChangeActorState_Registry[]
-    FactoryAddressChanged_Registry FactoryAddressChanged_Registry[]
-    OwnershipTransferred_Registry OwnershipTransferred_Registry[]
-    RegisterActor_Registry RegisterActor_Registry[]
-    
-}   
-
-
-model AdminModified_Registry {
-    id      Int    @id @default(autoincrement())
-    Registry Registry @relation(fields: [RegistryId], references: [id])
-    RegistryId Int
-
-    block   Int
-    transactionHash String
-    logIndex Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    data AdminModified_Registry_Event?
-}
-
-model AdminModified_Registry_Event {
-    id      Int    @id @default(autoincrement())
-    AdminModified_Registry AdminModified_Registry @relation(fields: [AdminModified_Registry_Id], references: [id])
-    AdminModified_Registry_Id Int @unique
-    account String
-    isAdmin String
-    
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-
-model ChangeActorState_Registry {
-    id      Int    @id @default(autoincrement())
-    Registry Registry @relation(fields: [RegistryId], references: [id])
-    RegistryId Int
-
-    block   Int
-    transactionHash String
-    logIndex Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    data ChangeActorState_Registry_Event?
-}
-
-model ChangeActorState_Registry_Event {
-    id      Int    @id @default(autoincrement())
-    ChangeActorState_Registry ChangeActorState_Registry @relation(fields: [ChangeActorState_Registry_Id], references: [id])
-    ChangeActorState_Registry_Id Int @unique
-    actorAddress String
-    state String
-    
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-
-model FactoryAddressChanged_Registry {
-    id      Int    @id @default(autoincrement())
-    Registry Registry @relation(fields: [RegistryId], references: [id])
-    RegistryId Int
-
-    block   Int
-    transactionHash String
-    logIndex Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    data FactoryAddressChanged_Registry_Event?
-}
-
-model FactoryAddressChanged_Registry_Event {
-    id      Int    @id @default(autoincrement())
-    FactoryAddressChanged_Registry FactoryAddressChanged_Registry @relation(fields: [FactoryAddressChanged_Registry_Id], references: [id])
-    FactoryAddressChanged_Registry_Id Int @unique
-    factoryAddress String
-    
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-
-model OwnershipTransferred_Registry {
-    id      Int    @id @default(autoincrement())
-    Registry Registry @relation(fields: [RegistryId], references: [id])
-    RegistryId Int
-
-    block   Int
-    transactionHash String
-    logIndex Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    data OwnershipTransferred_Registry_Event?
-}
-
-model OwnershipTransferred_Registry_Event {
-    id      Int    @id @default(autoincrement())
-    OwnershipTransferred_Registry OwnershipTransferred_Registry @relation(fields: [OwnershipTransferred_Registry_Id], references: [id])
-    OwnershipTransferred_Registry_Id Int @unique
-    previousOwner String
-    newOwner String
-    
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-
-model RegisterActor_Registry {
-    id      Int    @id @default(autoincrement())
-    Registry Registry @relation(fields: [RegistryId], references: [id])
-    RegistryId Int
-
-    block   Int
-    transactionHash String
-    logIndex Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    data RegisterActor_Registry_Event?
-}
-
-model RegisterActor_Registry_Event {
-    id      Int    @id @default(autoincrement())
-    RegisterActor_Registry RegisterActor_Registry @relation(fields: [RegisterActor_Registry_Id], references: [id])
-    RegisterActor_Registry_Id Int @unique
-    actorAddress String
-    
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-

@@ -24,7 +24,9 @@
     "typescript": "^5.0.4"
   },
   "workspaces": [
-    "packages/*"
+    "packages/events-schema-generator",
+    "packages/events-utilities",
+    "packages/heisenberg-cli"
   ],
   "dependencies": {
     "@0xtender/heisenberg-cli": "^0.0.2",

@@ -2,8 +2,13 @@
   "name": "@0xtender/events-schema-generator",
   "version": "0.0.13-beta",
   "type": "commonjs",
-  "scripts": {},
+  "scripts": {
+    "dev:generate": "npx prisma format --schema ./examples/postgres.prisma && npx prisma generate --schema ./examples/postgres.prisma"
+  },
   "dependencies": {
     "liquidjs": "^10.7.0"
+  },
+  "devDependencies": {
+    "@prisma/client": "^4.13.0"
   }
 }

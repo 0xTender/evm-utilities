@@ -1,5 +1,8 @@
-model {{ contract_name }} {
+model Contract {
     id      Int    @id @default(autoincrement())
+    
+    name String
+
     address String
     chainId Int
     transactionHash String
@@ -9,25 +12,40 @@ model {{ contract_name }} {
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    Event     Event[]
 
-    {% for event in events %}
-    {{-event.name}}_{{contract_name}} {{event.name}}_{{contract_name-}}[]
-    {% endfor %}
+    @@schema("contract")
 }   
 
-{% for event in events %}
-model {{event.name}}_{{contract_name}} {
-    id      Int    @id @default(autoincrement())
-    {{contract_name}} {{contract_name}} @relation(fields: [{{contract_name}}Id], references: [id])
-    {{contract_name}}Id Int
 
-    block   Int
-    transactionHash String
-    logIndex Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    data {{event.name-}}_{{contract_name}}_Event?
+model Event {
+    id                Int      @id @default(autoincrement())
+    Contract          Contract @relation(fields: [ContractId], references: [id])
+    ContractId        Int
+
+    block             Int
+    transactionHash   String
+    logIndex          Int
+    createdAt         DateTime @default(now())
+    updatedAt         DateTime @updatedAt
+
+    {% for event in events %}
+    E_{{-event.name}}_{{event.contract_name}} E_{{event.name}}_{{event.contract_name-}}[]
+    {% endfor %}
+
+  @@schema("event")
 }
+
+{% for event in events %}
+model E_{{-event.name}}_{{event.contract_name}} {
+    id      Int    @id @default(autoincrement())
+    Event   Event? @relation(fields: [eventId], references: [id])
+    eventId Int?   @unique
+
+    @@schema("event")
+}
+{% endfor %} 
+{% comment %} }
 
 model {{event.name}}_{{contract_name}}_Event {
     id      Int    @id @default(autoincrement())
@@ -38,6 +56,8 @@ model {{event.name}}_{{contract_name}}_Event {
     {% endfor %}
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    @@schema("event")
 }
 
-{% endfor %}
+ {% endcomment %}

@@ -78,11 +78,33 @@ export const generate_single_events_schema = async (
   if (engine_type === 'liquid') {
     const engine = new Liquid();
     const rendered = await engine.parseAndRender(template, {
-      contract_name: `${metadata.contractName}`,
       events: metadata.events,
     });
 
     return rendered;
+  }
+  throw new Error('Engine not supported');
+};
+
+export const renderer = async (
+  extension_name: keyof typeof extensions,
+  template_key: 'base_file_name' | 'file_name',
+  data: any = {}
+) => {
+  const extension = extensions[extension_name];
+  const templatePath = join(__dirname, 'templates', extension[template_key]);
+
+  const template = readFileSync(templatePath).toString();
+
+  if (!template) throw new Error('Template not found');
+
+  const engine_type = extension.engine;
+
+  if (engine_type === 'liquid') {
+    const engine = new Liquid();
+    const rendered = await engine.parseAndRender(template, data);
+
+    return rendered as string;
   }
   throw new Error('Engine not supported');
 };
@@ -117,20 +139,29 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["contract", "event"]
 }
 `;
 
   let template = init_template;
 
+  const events = [];
+
   for (let index = 0; index < metadata.length; index++) {
     const contract_metadata = metadata[index];
-    const rendered = await generate_single_events_schema(
-      contract_metadata,
-      extension_name
-    );
 
-    template += rendered;
+    events.push(
+      ...contract_metadata.events.map((e) => ({
+        ...e,
+        contract_name: contract_metadata.contractName,
+      }))
+    );
   }
+
+  const rendered = await renderer('postgres', 'file_name', {
+    events: events,
+  });
+  template += rendered;
 
   return template;
 };

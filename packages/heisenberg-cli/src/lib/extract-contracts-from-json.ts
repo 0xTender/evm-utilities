@@ -75,4 +75,6 @@ export const extract_contract_from_json = (
       },
     });
   }
+
+  return contracts;
 };
