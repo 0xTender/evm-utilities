@@ -1,10 +1,11 @@
-import { Contract_pm, PrismaClient } from '@prisma/client';
-import { execSync } from 'child_process';
+import { PrismaClient } from '@prisma/client';
 import { Contract, providers } from 'ethers';
 import { resolve } from 'path';
 import { get_latest_block } from '../../evm-helpers/src';
 import { readFileSync } from 'fs';
 import { randomUUID } from 'crypto';
+
+const batchSize = 1000;
 
 const prisma = new PrismaClient();
 
@@ -120,8 +121,8 @@ export const fetch_transactions_for_contract = async (contract: {
   console.log({ currentIndexTill, latestBlock });
 
   while (currentIndexTill < latestBlock) {
-    if (latestBlock - currentIndexTill > 200) {
-      currentIndexTill = currentIndexTill + 200;
+    if (latestBlock - currentIndexTill > batchSize) {
+      currentIndexTill = currentIndexTill + batchSize;
     } else {
       currentIndexTill = latestBlock;
     }

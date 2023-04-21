@@ -35,7 +35,7 @@ const main = async () => {
       try {
         const provider = new providers.JsonRpcProvider(contract.rpc);
 
-        const block = await get_latest_block(provider);
+        await get_latest_block(provider);
         return {
           ...contract,
           instance: get_contract(contract.address, contract.abi, provider),
