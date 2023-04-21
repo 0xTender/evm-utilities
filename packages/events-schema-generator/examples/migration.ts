@@ -4,6 +4,7 @@ import { Contract, providers } from 'ethers';
 import { resolve } from 'path';
 import { get_latest_block } from '../../evm-helpers/src';
 import { readFileSync } from 'fs';
+
 const prisma = new PrismaClient();
 
 const events = [
@@ -121,20 +122,51 @@ export const fetch_transactions_for_contract = async (contract: {
   );
 
   for (let index = 0; index < contract_events.length; index++) {
-    const event = contract_events[index];
+    const event_changed_name = contract_events[index];
 
-    const event_name = get_event_name(event.trim(), contract.name);
-    console.log(event_name);
+    const event_name = get_event_name(event_changed_name.trim(), contract.name);
+    const event = Object.values(contract_instance.interface.events).filter(
+      (e) => e.name === event_name
+    )[0]!;
     const queryData = await contract_instance.queryFilter(
       contract_instance.filters[event_name](),
       indexedTillBlock,
       latestBlock
     );
+    const to_save_args: {
+      blockData: {
+        blockNumber: number;
+        transactionHash: string;
+        logIndex: number;
+      };
+      data: any;
+    }[] = [];
     for (let index = 0; index < queryData.length; index++) {
       const query = queryData[index];
-      console.log(query);
+
+      const arg_keys = event.inputs.map((e) => e.name);
+
+      let arg_map = {};
+
+      for (let index = 0; index < arg_keys.length; index++) {
+        const arg_key = arg_keys[index];
+        const arg = query.args?.[arg_key];
+        const data = arg?.toString();
+        arg_map = { ...arg_map, [`A_${arg_key}`]: data };
+      }
+
+      to_save_args.push({
+        data: arg_map,
+        blockData: {
+          blockNumber: query.blockNumber,
+          transactionHash: query.transactionHash,
+          logIndex: query.logIndex,
+        },
+      });
+
       break;
     }
+    //
   }
 };
 
