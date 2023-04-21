@@ -3,7 +3,7 @@
   "version": "0.0.13-beta",
   "type": "commonjs",
   "scripts": {
-    "dev:generate": "npx prisma format --schema ./examples/postgres.prisma && npx prisma generate --schema ./examples/postgres.prisma"
+    "dev:generate": "npx prisma format --schema ./examples/postgres.prisma && npx prisma generate --schema ./examples/postgres.prisma && npx prisma db push --schema ./examples/postgres.prisma"
   },
   "dependencies": {
     "liquidjs": "^10.7.0"

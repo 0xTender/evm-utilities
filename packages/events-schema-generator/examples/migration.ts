@@ -1,10 +1,11 @@
 import { PrismaClient } from '@prisma/client';
+import { execSync } from 'child_process';
 const prisma = new PrismaClient();
 
 const contracts_arr = [
   {
-    chainId: 123,
-    initBlock: 0,
+    chainId: 137,
+    initBlock: 41788917,
     name: 'Ownable',
     address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
     transactionHash:
@@ -39,5 +40,16 @@ const add_contracts = async () => {
     await prisma.contract_pm.createMany({
       data: await Promise.all(pending_contracts),
     });
+
+    return pending_contracts;
   }
+  return [];
 };
+
+const migrate = async () => {
+  const added_contracts = await add_contracts();
+
+  return added_contracts;
+};
+
+migrate().then(console.log).catch(console.error);
