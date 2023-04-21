@@ -50,9 +50,10 @@ const main = async () => {
   const rendered = await generate_events_schema(contract_metadata, 'postgres');
 
   writeFileSync(join(__dirname, '..', 'examples', 'postgres.prisma'), rendered);
-  execSync('npm run dev:generate', {
+  const logs = execSync('npm run dev:generate', {
     cwd: join(__dirname, '..'),
   });
+  console.log(logs.toString());
 };
 
 main().catch(console.error);

@@ -1,5 +1,7 @@
 {
   "address": "0xb0897686c545045aFc77CF20eC7A532E3120E0F1",
+  "transactionHash": "0xa6527d280cc8001c6417bafadf4ced4a3d619b6d7b968ed5d2792723d28a4f6a",
+
   "abi": [
     {
       "constant": true,
@@ -159,6 +161,5 @@
       "name": "Approval",
       "type": "event"
     }
-  ],
-  "transactionHash": "0xa6527d280cc8001c6417bafadf4ced4a3d619b6d7b968ed5d2792723d28a4f6a"
+  ]
 }
