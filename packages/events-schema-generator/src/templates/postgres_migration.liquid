@@ -6,7 +6,7 @@ import {
 } from '@0xtender/evm-helpers/src';
 
 
-const batchSize = 1000;
+const batchSize = 500;
 
 const prisma = new PrismaClient();
 
@@ -39,20 +39,45 @@ const contracts_arr: {
 ];
 
 const migrate = async () => {
-  const added_contracts = await add_contracts(prisma, contracts_arr);
+  const run = async () => {
+    await add_contracts(prisma, contracts_arr);
+    const promises: Promise<any>[] = [];
 
-  for (let index = 0; index < contracts_arr.length; index++) {
-    const contract = contracts_arr[index];
-    await fetch_transactions_for_contract(
-      contract,
-      events,
-      get_provider(contract.chainId),
-      prisma,
-      batchSize
-    );
-  }
+    for (let index = 0; index < contracts_arr.length; index++) {
+      const contract = contracts_arr[index];
+      promises.push(
+        (async () => {
+          try {
+            await fetch_transactions_for_contract(
+              contract,
+              events,
+              get_provider(contract.chainId),
+              prisma,
+              batchSize
+            );
+          } catch (err) {
+            console.error(err);
+            console.log(`Running failed transaction again in 5 seconds...`);
 
-  return added_contracts;
+            await new Promise((resolve) => {
+              setTimeout(async () => {
+                await run();
+                resolve({});
+              }, 5_000);
+            });
+          }
+        })()
+      );
+    }
+
+    await Promise.all(promises);
+
+    console.log(`Running again... in 10 seconds...`);
+    setTimeout(async () => {
+      await run();
+    }, 10_000);
+  };
+  await run();
 };
 
 migrate().catch(console.error);

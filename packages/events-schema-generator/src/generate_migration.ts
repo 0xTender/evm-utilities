@@ -1,6 +1,10 @@
-import { Contract } from 'ethers';
+import { Contract, providers } from 'ethers';
 import { renderer, renderers } from './renderer';
-import { get_contract_metadata, PromiseType } from '@0xtender/evm-helpers';
+import {
+  get_block_from_tx_hash,
+  get_contract_metadata,
+  PromiseType,
+} from '@0xtender/evm-helpers';
 
 export const generate_migration = async <T extends Contract>(
   contracts: {
@@ -38,16 +42,25 @@ export const generate_migration = async <T extends Contract>(
 
   const rendered = await renderer(extension_name, 'migration', {
     events,
-    contracts: metadata
-      .map((e) => ({
-        chainId: e.chainId,
-        initBlock: 1,
-        name: e.contractName,
-        address: e.address,
-        transactionHash: e.transactionHash,
-        abiPath: e.abiPath,
-      }))
-      .map((e) => JSON.stringify(e, undefined, 4)),
+    contracts: (
+      await Promise.all(
+        metadata.map(async (e) => {
+          const provider = e.provider as providers.JsonRpcProvider;
+          const initBlock = await get_block_from_tx_hash(
+            e.transactionHash,
+            provider
+          );
+          return {
+            chainId: e.chainId,
+            initBlock,
+            name: e.contractName,
+            address: e.address,
+            transactionHash: e.transactionHash,
+            abiPath: e.abiPath,
+          };
+        })
+      )
+    ).map((e) => JSON.stringify(e, undefined, 4)),
   });
 
   return rendered;

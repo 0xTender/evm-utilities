@@ -45,6 +45,7 @@ export const get_contract_metadata = async <T extends Contract>(
   }
 
   return {
+    provider: contract.provider,
     address: contract.address,
     events,
     chainId,
