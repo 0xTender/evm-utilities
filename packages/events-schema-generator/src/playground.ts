@@ -5,6 +5,7 @@ import { get_contract, get_latest_block } from '@0xtender/evm-helpers';
 import { join } from 'path';
 import { execSync } from 'child_process';
 import { providers } from 'ethers';
+import { generate_migration } from './generate_migration';
 
 const home = __dirname;
 const pathToFolder = `../examples`;
@@ -47,13 +48,20 @@ const main = async () => {
     })
   );
 
-  const rendered = await generate_events_schema(contract_metadata, 'postgres');
+  // const rendered = await generate_events_schema(contract_metadata, 'postgres');
 
-  writeFileSync(join(__dirname, '..', 'examples', 'postgres.prisma'), rendered);
-  const logs = execSync('npm run dev:generate', {
-    cwd: join(__dirname, '..'),
-  });
-  console.log(logs.toString());
+  // writeFileSync(join(__dirname, '..', 'examples', 'postgres.prisma'), rendered);
+  // const logs = execSync('npm run dev:generate', {
+  //   cwd: join(__dirname, '..'),
+  // });
+  // console.log(logs.toString());
+  const migration = await generate_migration(contract_metadata, 'postgres');
+
+  writeFileSync(
+    join(__dirname, '..', 'examples', 'postgres_migration.ts'),
+    migration
+  );
+  console.log(migration);
 };
 
 main().catch(console.error);

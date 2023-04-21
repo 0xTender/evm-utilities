@@ -1,15 +1,14 @@
 import { Contract } from 'ethers';
-import { get_contract_metadata, PromiseType } from '@0xtender/evm-helpers';
 import { renderer, renderers } from './renderer';
+import { get_contract_metadata, PromiseType } from '@0xtender/evm-helpers';
 
-export const generate_events_schema = async <T extends Contract>(
+export const generate_migration = async <T extends Contract>(
   contracts: {
     instance: T;
     transactionHash: string;
     name: string;
   }[],
-  extension_name: keyof typeof renderers,
-  init_template?: string
+  extension_name: keyof typeof renderers
 ) => {
   const metadata: PromiseType<ReturnType<typeof get_contract_metadata>>[] = [];
   for (let index = 0; index < contracts.length; index++) {
@@ -22,20 +21,6 @@ export const generate_events_schema = async <T extends Contract>(
       )
     );
   }
-
-  init_template ??= `
-generator client {
-  provider        = "prisma-client-js"
-}
-
-datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
-}
-`;
-
-  let template = init_template;
-
   const events = [];
 
   for (let index = 0; index < metadata.length; index++) {
@@ -48,11 +33,11 @@ datasource db {
       }))
     );
   }
+  console.log(events);
 
-  const rendered = await renderer(extension_name, 'file_name', {
-    events: events,
+  const rendered = await renderer(extension_name, 'migration', {
+    events,
   });
-  template += rendered;
 
-  return template;
+  return rendered;
 };
