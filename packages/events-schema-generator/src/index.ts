@@ -133,13 +133,11 @@ export const generate_events_schema = async <T extends Contract>(
   init_template ??= `
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
-  schemas  = ["contract", "event"]
 }
 `;
 

@@ -14,7 +14,6 @@ model Contract {
     updatedAt DateTime @updatedAt
     Event     Event[]
 
-    @@schema("contract")
 }   
 
 
@@ -33,7 +32,6 @@ model Event {
     E_{{-event.name}}_{{event.contract_name}} E_{{event.name}}_{{event.contract_name-}}[]
     {% endfor %}
 
-  @@schema("event")
 }
 
 {% for event in events %}
@@ -42,7 +40,12 @@ model E_{{-event.name}}_{{event.contract_name}} {
     Event   Event? @relation(fields: [eventId], references: [id])
     eventId Int?   @unique
 
-    @@schema("event")
+    {% for arg in event.inputs %}
+    A_{{arg.name}} String
+    {% endfor %}
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
 }
 {% endfor %} 
 {% comment %} }
@@ -51,11 +54,6 @@ model {{event.name}}_{{contract_name}}_Event {
     id      Int    @id @default(autoincrement())
     {{event.name}}_{{contract_name}} {{event.name}}_{{contract_name}} @relation(fields: [{{event.name}}_{{contract_name}}_Id], references: [id])
     {{event.name}}_{{contract_name}}_Id Int @unique
-    {% for arg in event.inputs %}
-    {{-arg.name}} String
-    {% endfor %}
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
 
     @@schema("event")
 }

@@ -1,12 +1,10 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["multiSchema"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
-  schemas  = ["contract", "event"]
 }
 
 model Contract {
@@ -24,8 +22,6 @@ model Contract {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Event     Event[]
-
-  @@schema("contract")
 }
 
 model Event {
@@ -39,145 +35,18 @@ model Event {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  E_AdminModified_AccessControl E_AdminModified_AccessControl[]
-
-  E_OwnershipTransferred_AccessControl E_OwnershipTransferred_AccessControl[]
-
-  E_AdminModified_Candy E_AdminModified_Candy[]
-
-  E_Approval_Candy E_Approval_Candy[]
-
-  E_ApprovalForAll_Candy E_ApprovalForAll_Candy[]
-
-  E_OwnershipTransferred_Candy E_OwnershipTransferred_Candy[]
-
-  E_Transfer_Candy E_Transfer_Candy[]
-
-  E_AdminModified_ActorFactory E_AdminModified_ActorFactory[]
-
-  E_OwnershipTransferred_ActorFactory E_OwnershipTransferred_ActorFactory[]
-
-  E_AdminModified_Registry E_AdminModified_Registry[]
-
-  E_ChangeActorState_Registry E_ChangeActorState_Registry[]
-
-  E_FactoryAddressChanged_Registry E_FactoryAddressChanged_Registry[]
-
-  E_OwnershipTransferred_Registry E_OwnershipTransferred_Registry[]
-
-  E_RegisterActor_Registry E_RegisterActor_Registry[]
-
-  @@schema("event")
+  E_OwnershipTransferred_Ownable E_OwnershipTransferred_Ownable[]
 }
 
-model E_AdminModified_AccessControl {
+model E_OwnershipTransferred_Ownable {
   id      Int    @id @default(autoincrement())
   Event   Event? @relation(fields: [eventId], references: [id])
   eventId Int?   @unique
 
-  @@schema("event")
-}
+  A_previousOwner String
 
-model E_OwnershipTransferred_AccessControl {
-  id      Int    @id @default(autoincrement())
-  Event   Event? @relation(fields: [eventId], references: [id])
-  eventId Int?   @unique
+  A_newOwner String
 
-  @@schema("event")
-}
-
-model E_AdminModified_Candy {
-  id      Int    @id @default(autoincrement())
-  Event   Event? @relation(fields: [eventId], references: [id])
-  eventId Int?   @unique
-
-  @@schema("event")
-}
-
-model E_Approval_Candy {
-  id      Int    @id @default(autoincrement())
-  Event   Event? @relation(fields: [eventId], references: [id])
-  eventId Int?   @unique
-
-  @@schema("event")
-}
-
-model E_ApprovalForAll_Candy {
-  id      Int    @id @default(autoincrement())
-  Event   Event? @relation(fields: [eventId], references: [id])
-  eventId Int?   @unique
-
-  @@schema("event")
-}
-
-model E_OwnershipTransferred_Candy {
-  id      Int    @id @default(autoincrement())
-  Event   Event? @relation(fields: [eventId], references: [id])
-  eventId Int?   @unique
-
-  @@schema("event")
-}
-
-model E_Transfer_Candy {
-  id      Int    @id @default(autoincrement())
-  Event   Event? @relation(fields: [eventId], references: [id])
-  eventId Int?   @unique
-
-  @@schema("event")
-}
-
-model E_AdminModified_ActorFactory {
-  id      Int    @id @default(autoincrement())
-  Event   Event? @relation(fields: [eventId], references: [id])
-  eventId Int?   @unique
-
-  @@schema("event")
-}
-
-model E_OwnershipTransferred_ActorFactory {
-  id      Int    @id @default(autoincrement())
-  Event   Event? @relation(fields: [eventId], references: [id])
-  eventId Int?   @unique
-
-  @@schema("event")
-}
-
-model E_AdminModified_Registry {
-  id      Int    @id @default(autoincrement())
-  Event   Event? @relation(fields: [eventId], references: [id])
-  eventId Int?   @unique
-
-  @@schema("event")
-}
-
-model E_ChangeActorState_Registry {
-  id      Int    @id @default(autoincrement())
-  Event   Event? @relation(fields: [eventId], references: [id])
-  eventId Int?   @unique
-
-  @@schema("event")
-}
-
-model E_FactoryAddressChanged_Registry {
-  id      Int    @id @default(autoincrement())
-  Event   Event? @relation(fields: [eventId], references: [id])
-  eventId Int?   @unique
-
-  @@schema("event")
-}
-
-model E_OwnershipTransferred_Registry {
-  id      Int    @id @default(autoincrement())
-  Event   Event? @relation(fields: [eventId], references: [id])
-  eventId Int?   @unique
-
-  @@schema("event")
-}
-
-model E_RegisterActor_Registry {
-  id      Int    @id @default(autoincrement())
-  Event   Event? @relation(fields: [eventId], references: [id])
-  eventId Int?   @unique
-
-  @@schema("event")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

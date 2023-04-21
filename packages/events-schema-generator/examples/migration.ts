@@ -1,2 +1,6 @@
-import { Prisma } from '@prisma/client';
-let x: Prisma.E_AdminModified_AccessControlScalarFieldEnum;
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
+const add_contracts = async () => {
+  const contracts = await prisma.contract.count();
+};
