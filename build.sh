@@ -7,11 +7,13 @@ tag="${2:-latest}"
 
 if [ -z "$version" ]; then
   echo "Version is required"
+  echo "Usage ./build.sh <version> [tag]"
   exit 1
 fi
 
 if [ "$tag" != "latest" ] && [ "$tag" != "next" ]; then
   echo "Tag must be latest or next"
+  echo "Usage ./build.sh <version> [tag]"
   exit 1
 fi
 

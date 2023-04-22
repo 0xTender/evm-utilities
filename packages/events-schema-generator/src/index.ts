@@ -2,6 +2,8 @@ import { Contract } from 'ethers';
 import { get_contract_metadata, PromiseType } from '@0xtender/evm-helpers';
 import { renderer, renderers } from './renderer';
 
+export * from './generate_migration';
+
 export const generate_events_schema = async <T extends Contract>(
   contracts: {
     instance: T;

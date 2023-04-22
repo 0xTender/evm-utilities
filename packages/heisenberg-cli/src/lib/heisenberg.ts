@@ -1,18 +1,15 @@
 #!/usr/bin/env ts-node
+import { get_contract, get_json_rpc_provider } from '@0xtender/evm-helpers';
 import {
-  get_contract,
-  get_contract_metadata,
-  get_json_rpc_provider,
-} from '@0xtender/evm-helpers';
-import { generate_events_schema } from '@0xtender/events-schema-generator';
+  generate_events_schema,
+  generate_migration,
+} from '@0xtender/events-schema-generator';
 import { Command } from 'commander';
 
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 
 import { z } from 'zod';
-import { providers } from 'ethers';
-import { generate_migration } from '../../../events-schema-generator/src/generate_migration';
 
 const program = new Command();
 
