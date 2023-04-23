@@ -3,7 +3,7 @@ import { providers } from 'ethers';
 import {
   add_contracts,
   fetch_transactions_for_contract,
-} from '@0xtender/evm-helpers/src';
+} from '@0xtender/evm-helpers';
 
 
 const batchSize = 1000;
@@ -44,7 +44,7 @@ const migrate = async () => {
     const promises: Promise<any>[] = [];
 
     for (let index = 0; index < contracts_arr.length; index++) {
-      const contract = contracts_arr[index];
+      const contract = contracts_arr[index]!;
       promises.push(
         (async () => {
           try {

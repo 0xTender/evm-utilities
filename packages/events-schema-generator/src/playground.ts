@@ -8,14 +8,14 @@ import { providers } from 'ethers';
 import { generate_migration } from './generate_migration';
 
 const home = __dirname;
-const pathToFolder = `../examples`;
+const pathToFolder = `./examples`;
 
 const contracts_arr: {
   path: string;
   name: string;
   rpc: string;
 }[] = JSON.parse(
-  readFileSync(join(__dirname, '..', 'examples/contracts.json')).toString()
+  readFileSync(join(__dirname, 'examples/contracts.json')).toString()
 ).map((obj: any) => {
   return { ...obj, path: join(home, pathToFolder, obj.path) };
 });
@@ -56,7 +56,7 @@ const main = async () => {
 
   const rendered = await generate_events_schema(contract_metadata, 'postgres');
 
-  writeFileSync(join(__dirname, '..', 'examples', 'postgres.prisma'), rendered);
+  writeFileSync(join(__dirname, 'examples', 'postgres.prisma'), rendered);
   const logs = execSync('npm run dev:generate', {
     cwd: join(__dirname, '..'),
   });
@@ -64,7 +64,7 @@ const main = async () => {
   const migration = await generate_migration(contract_metadata, 'postgres');
 
   writeFileSync(
-    join(__dirname, '..', 'examples', 'postgres_migration.ts'),
+    join(__dirname, 'examples', 'postgres_migration.ts'),
     migration
   );
   console.log(migration);

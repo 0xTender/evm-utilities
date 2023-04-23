@@ -3,7 +3,7 @@ import { providers } from 'ethers';
 import {
   add_contracts,
   fetch_transactions_for_contract,
-} from '@0xtender/evm-helpers/src';
+} from '@0xtender/evm-helpers';
 
 
 const batchSize = 1000;
@@ -51,7 +51,7 @@ const contracts_arr: {
     "name": "Avalanche",
     "address": "0xb0897686c545045aFc77CF20eC7A532E3120E0F1",
     "transactionHash": "0xa6527d280cc8001c6417bafadf4ced4a3d619b6d7b968ed5d2792723d28a4f6a",
-    "abiPath": "/Users/aniketchowdhury/Experiments/evm-utilities/packages/events-schema-generator/examples/Avalanche.json"
+    "abiPath": "/Users/aniketchowdhury/Experiments/evm-utilities/packages/events-schema-generator/src/examples/Avalanche.json"
 },
 {
     "chainId": 137,
@@ -59,7 +59,7 @@ const contracts_arr: {
     "name": "RandomUniswap",
     "address": "0x1111111254fb6c44bac0bed2854e76f90643097d",
     "transactionHash": "0x3392761ef9a99a3b3b2b6c4eecd047ec82c602fbdea9da6ed2e1cd4bf87603d7",
-    "abiPath": "/Users/aniketchowdhury/Experiments/evm-utilities/packages/events-schema-generator/examples/RandomUniswap.json"
+    "abiPath": "/Users/aniketchowdhury/Experiments/evm-utilities/packages/events-schema-generator/src/examples/RandomUniswap.json"
 },
 {
     "chainId": 137,
@@ -67,7 +67,7 @@ const contracts_arr: {
     "name": "WETH",
     "address": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
     "transactionHash": "0xa6527d280cc8001c6417bafadf4ced4a3d619b6d7b968ed5d2792723d28a4f6a",
-    "abiPath": "/Users/aniketchowdhury/Experiments/evm-utilities/packages/events-schema-generator/examples/WETH.json"
+    "abiPath": "/Users/aniketchowdhury/Experiments/evm-utilities/packages/events-schema-generator/src/examples/WETH.json"
 },
 ];
 
@@ -77,7 +77,7 @@ const migrate = async () => {
     const promises: Promise<any>[] = [];
 
     for (let index = 0; index < contracts_arr.length; index++) {
-      const contract = contracts_arr[index];
+      const contract = contracts_arr[index]!;
       promises.push(
         (async () => {
           try {
@@ -105,7 +105,7 @@ const migrate = async () => {
 
     await Promise.all(promises);
 
-    console.log(`Running again... in 10 seconds...`);
+    console.log(`Running again... in 10_000 miliseconds...`);
     setTimeout(async () => {
       await run();
     }, 10_000);

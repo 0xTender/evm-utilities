@@ -3,7 +3,7 @@ import { providers } from 'ethers';
 import {
   add_contracts,
   fetch_transactions_for_contract,
-} from '@0xtender/evm-helpers/src';
+} from '@0xtender/evm-helpers';
 
 const batchSize = 1000;
 

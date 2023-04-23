@@ -1,14 +1,15 @@
 {
   "name": "@0xtender/events-schema-generator",
-  "version": "0.0.17",
+  "version": "0.1.0",
   "type": "commonjs",
   "scripts": {
-    "dev:generate": "npx prisma format --schema ./examples/postgres.prisma && npx prisma generate --schema ./examples/postgres.prisma && npx prisma db push --schema ./examples/postgres.prisma"
+    "dev:generate": "npx prisma format --schema ./src/examples/postgres.prisma && npx prisma generate --schema ./src/examples/postgres.prisma && npx prisma db push --schema ./src/examples/postgres.prisma"
   },
   "dependencies": {
     "liquidjs": "^10.7.0"
   },
   "devDependencies": {
     "@prisma/client": "^4.13.0"
-  }
+  },
+  "peerDependencies": {}
 }

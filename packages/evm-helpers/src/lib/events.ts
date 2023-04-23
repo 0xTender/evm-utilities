@@ -1,7 +1,7 @@
 import { Contract, providers } from 'ethers';
-import { get_latest_block } from '@0xtender/evm-helpers/src';
 import { readFileSync } from 'fs';
 import { randomUUID } from 'crypto';
+import { get_latest_block } from './contract';
 export const add_contracts = async (prisma: any, contracts_arr: any[]) => {
   const contracts = await prisma.contract_pm.count();
 
@@ -82,9 +82,10 @@ export const fetch_transactions_for_contract = async (
       currentIndexTill = latestBlock;
     }
     console.log(
-      `pendingBlocks(${contract_pm.name}): ${
-        currentIndexTill - indexedTillBlock
-      }`
+      `pendingBlocks (${contract_pm.name}): ${latestBlock - indexedTillBlock}
+      currentBlock: ${currentIndexTill}
+      latestBlock: ${latestBlock}
+      `
     );
 
     const promises: Promise<any>[] = [];

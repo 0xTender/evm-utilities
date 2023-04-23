@@ -23,7 +23,8 @@
     "nx": "15.9.2",
     "prettier": "^2.6.2",
     "tsx": "^3.12.6",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "yalc": "^1.0.0-pre.53"
   },
   "workspaces": [
     "packages/events-schema-generator",
