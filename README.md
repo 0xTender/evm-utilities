@@ -47,3 +47,7 @@ Options:
 
 npx tsx --tsconfig tsconfig.base.json ./packages/heisenberg-cli/src/lib/heisenberg.ts generate packages/heisenberg-cli/examples/contracts.json -i ./packages/heisenberg-cli/examples/input.prisma -o ./packages/heisenberg-cli/examples/output.prisma
 ```
+
+```bash
+heisenberg generate-migration contracts.json -o worker.ts
+```

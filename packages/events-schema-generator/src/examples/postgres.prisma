@@ -1,0 +1,230 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Contract_pm {
+  id Int @id @default(autoincrement())
+
+  name String
+
+  address         String
+  chainId         Int
+  transactionHash String
+
+  abiPath String
+
+  initBlock        Int
+  indexedTillBlock Int
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Event_pm  Event_pm[]
+}
+
+model Event_pm {
+  id          String      @id
+  Contract_pm Contract_pm @relation(fields: [ContractId], references: [id])
+  ContractId  Int
+
+  block           Int
+  transactionHash String
+  logIndex        Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  E_Transfer_Avalanche E_Transfer_Avalanche[]
+
+  E_Approval_Avalanche E_Approval_Avalanche[]
+
+  E_OrderFilledRFQ_RandomUniswap E_OrderFilledRFQ_RandomUniswap[]
+
+  E_OwnershipTransferred_RandomUniswap E_OwnershipTransferred_RandomUniswap[]
+
+  E_Swapped_RandomUniswap E_Swapped_RandomUniswap[]
+
+  E_Approval_WETH E_Approval_WETH[]
+
+  E_MetaTransactionExecuted_WETH E_MetaTransactionExecuted_WETH[]
+
+  E_RoleAdminChanged_WETH E_RoleAdminChanged_WETH[]
+
+  E_RoleGranted_WETH E_RoleGranted_WETH[]
+
+  E_RoleRevoked_WETH E_RoleRevoked_WETH[]
+
+  E_Transfer_WETH E_Transfer_WETH[]
+}
+
+model E_Transfer_Avalanche {
+  id       Int      @id @default(autoincrement())
+  Event_pm Event_pm @relation(fields: [eventId], references: [id])
+  eventId  String   @unique
+
+  A_from String @db.VarChar(1000)
+
+  A_to String @db.VarChar(1000)
+
+  A_value String @db.VarChar(1000)
+
+  A_data String @db.VarChar(1000)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model E_Approval_Avalanche {
+  id       Int      @id @default(autoincrement())
+  Event_pm Event_pm @relation(fields: [eventId], references: [id])
+  eventId  String   @unique
+
+  A_owner String @db.VarChar(1000)
+
+  A_spender String @db.VarChar(1000)
+
+  A_value String @db.VarChar(1000)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model E_OrderFilledRFQ_RandomUniswap {
+  id       Int      @id @default(autoincrement())
+  Event_pm Event_pm @relation(fields: [eventId], references: [id])
+  eventId  String   @unique
+
+  A_orderHash String @db.VarChar(1000)
+
+  A_makingAmount String @db.VarChar(1000)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model E_OwnershipTransferred_RandomUniswap {
+  id       Int      @id @default(autoincrement())
+  Event_pm Event_pm @relation(fields: [eventId], references: [id])
+  eventId  String   @unique
+
+  A_previousOwner String @db.VarChar(1000)
+
+  A_newOwner String @db.VarChar(1000)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model E_Swapped_RandomUniswap {
+  id       Int      @id @default(autoincrement())
+  Event_pm Event_pm @relation(fields: [eventId], references: [id])
+  eventId  String   @unique
+
+  A_sender String @db.VarChar(1000)
+
+  A_srcToken String @db.VarChar(1000)
+
+  A_dstToken String @db.VarChar(1000)
+
+  A_dstReceiver String @db.VarChar(1000)
+
+  A_spentAmount String @db.VarChar(1000)
+
+  A_returnAmount String @db.VarChar(1000)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model E_Approval_WETH {
+  id       Int      @id @default(autoincrement())
+  Event_pm Event_pm @relation(fields: [eventId], references: [id])
+  eventId  String   @unique
+
+  A_owner String @db.VarChar(1000)
+
+  A_spender String @db.VarChar(1000)
+
+  A_value String @db.VarChar(1000)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model E_MetaTransactionExecuted_WETH {
+  id       Int      @id @default(autoincrement())
+  Event_pm Event_pm @relation(fields: [eventId], references: [id])
+  eventId  String   @unique
+
+  A_userAddress String @db.VarChar(1000)
+
+  A_relayerAddress String @db.VarChar(1000)
+
+  A_functionSignature String @db.VarChar(1000)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model E_RoleAdminChanged_WETH {
+  id       Int      @id @default(autoincrement())
+  Event_pm Event_pm @relation(fields: [eventId], references: [id])
+  eventId  String   @unique
+
+  A_role String @db.VarChar(1000)
+
+  A_previousAdminRole String @db.VarChar(1000)
+
+  A_newAdminRole String @db.VarChar(1000)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model E_RoleGranted_WETH {
+  id       Int      @id @default(autoincrement())
+  Event_pm Event_pm @relation(fields: [eventId], references: [id])
+  eventId  String   @unique
+
+  A_role String @db.VarChar(1000)
+
+  A_account String @db.VarChar(1000)
+
+  A_sender String @db.VarChar(1000)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model E_RoleRevoked_WETH {
+  id       Int      @id @default(autoincrement())
+  Event_pm Event_pm @relation(fields: [eventId], references: [id])
+  eventId  String   @unique
+
+  A_role String @db.VarChar(1000)
+
+  A_account String @db.VarChar(1000)
+
+  A_sender String @db.VarChar(1000)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model E_Transfer_WETH {
+  id       Int      @id @default(autoincrement())
+  Event_pm Event_pm @relation(fields: [eventId], references: [id])
+  eventId  String   @unique
+
+  A_from String @db.VarChar(1000)
+
+  A_to String @db.VarChar(1000)
+
+  A_value String @db.VarChar(1000)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

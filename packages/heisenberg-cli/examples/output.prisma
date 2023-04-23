@@ -7,45 +7,42 @@ datasource db {
     provider = "postgresql"
     url      = env("DATABASE_URL")
 }
+
 model Ownable {
-    id      Int    @id @default(autoincrement())
-    address String
-    chainId Int
+    id              Int    @id @default(autoincrement())
+    address         String
+    chainId         Int
     transactionHash String
 
-    deploymentBlock  Int
+    initBlock        Int
     indexedTillBlock Int
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     OwnershipTransferred_Ownable OwnershipTransferred_Ownable[]
-    
-}   
-
+}
 
 model OwnershipTransferred_Ownable {
-    id      Int    @id @default(autoincrement())
-    Ownable Ownable @relation(fields: [OwnableId], references: [id])
+    id        Int     @id @default(autoincrement())
+    Ownable   Ownable @relation(fields: [OwnableId], references: [id])
     OwnableId Int
 
-    block   Int
+    block           Int
     transactionHash String
-    logIndex Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    data OwnershipTransferred_Ownable_Event?
+    logIndex        Int
+    createdAt       DateTime                            @default(now())
+    updatedAt       DateTime                            @updatedAt
+    data            OwnershipTransferred_Ownable_Event?
 }
 
 model OwnershipTransferred_Ownable_Event {
-    id      Int    @id @default(autoincrement())
-    OwnershipTransferred_Ownable OwnershipTransferred_Ownable @relation(fields: [OwnershipTransferred_Ownable_Id], references: [id])
-    OwnershipTransferred_Ownable_Id Int @unique
-    previousOwner String
-    newOwner String
-    
+    id                              Int                          @id @default(autoincrement())
+    OwnershipTransferred_Ownable    OwnershipTransferred_Ownable @relation(fields: [OwnershipTransferred_Ownable_Id], references: [id])
+    OwnershipTransferred_Ownable_Id Int                          @unique
+    previousOwner                   String
+    newOwner                        String
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
-
-

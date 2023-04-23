@@ -15,11 +15,11 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@0xtender/evm-helpers": ["packages/evm-helpers/src/index.ts"],
       "@0xtender/events-schema-generator": [
         "packages/events-schema-generator/src/index.ts"
       ],
-      "@0xtender/heisenberg-cli": ["packages/heisenberg-cli/src/index.ts"],
-      "@0xtender/evm-helpers": ["packages/evm-helpers/src/index.ts"]
+      "@0xtender/heisenberg-cli": ["packages/heisenberg-cli/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

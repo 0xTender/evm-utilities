@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "publish:all": "./build.sh",
+    "publish:package": "npx tsx tools/scripts/publish.ts",
     "heisenberg:generate-example": "tsx --tsconfig tsconfig.base.json ./packages/heisenberg-cli/src/lib/heisenberg.ts generate packages/heisenberg-cli/examples/contracts.json -i ./packages/heisenberg-cli/examples/input.prisma -o ./packages/heisenberg-cli/examples/output.prisma"
   },
   "private": true,
@@ -21,7 +23,8 @@
     "nx": "15.9.2",
     "prettier": "^2.6.2",
     "tsx": "^3.12.6",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "yalc": "^1.0.0-pre.53"
   },
   "workspaces": [
     "packages/events-schema-generator",

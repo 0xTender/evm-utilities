@@ -1,0 +1,17 @@
+[
+  {
+    "path": "./Avalanche.json",
+    "name": "Avalanche",
+    "rpc": "https://polygon-rpc.com"
+  },
+  {
+    "path": "./RandomUniswap.json",
+    "name": "RandomUniswap",
+    "rpc": "https://polygon-rpc.com"
+  },
+  {
+    "path": "./WETH.json",
+    "name": "WETH",
+    "rpc": "https://polygon-rpc.com"
+  }
+]
