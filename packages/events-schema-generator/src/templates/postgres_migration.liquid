@@ -77,6 +77,18 @@ const migrate = async () => {
       await run();
     }, 10_000);
   };
+
+  const chains = Array.from(new Set(contracts_arr.map((e) => e.chainId)));
+  for (let index = 0; index < chains.length; index++) {
+    const chainId = chains[index];
+    try {
+      console.log("provider ready");
+      await get_provider(chainId).ready;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   await run();
 };
 
