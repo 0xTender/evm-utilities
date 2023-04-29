@@ -1,6 +1,6 @@
 {
   "name": "@0xtender/events-schema-generator",
-  "version": "0.1.0",
+  "version": "0.1.2-beta",
   "type": "commonjs",
   "scripts": {
     "dev:generate": "npx prisma format --schema ./src/examples/postgres.prisma && npx prisma generate --schema ./src/examples/postgres.prisma && npx prisma db push --schema ./src/examples/postgres.prisma"
