@@ -7,7 +7,7 @@ import {
   MigrationListener,
 } from '@0xtender/evm-helpers';
 
-const batchSize = 1000;
+const batchSize = 1;
 
 const prisma = new PrismaClient();
 
@@ -155,8 +155,14 @@ export const migrate = async <T extends MigrationEventTypes>(
 };
 
 const emitter = new MigrationListener<MigrationEventTypes>();
-emitter.on('event_data', async (data) => {
-  console.log(data);
+emitter.on('event_data', async (...data) => {
+  for (let index = 0; index < data.length; index++) {
+    const events = data[index];
+    for (let index = 0; index < events.length; index++) {
+      const event = events[index];
+      console.log({ event });
+    }
+  }
 });
 
 migrate(emitter).catch(console.error);

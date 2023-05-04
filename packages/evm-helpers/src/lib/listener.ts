@@ -12,14 +12,14 @@ export class MigrationListener<T extends Record<string, any[]>> {
 
   on<EventName extends keyof T>(
     eventName: EventName,
-    handler: (eventArg: T[EventName]) => void
+    handler: (...eventArg: T[EventName]) => void
   ) {
     this._eventEmitter.on(eventName.toString(), handler as any);
   }
 
   off<EventName extends keyof T>(
     eventName: EventName,
-    handler: (eventArg: T[EventName]) => void
+    handler: (...eventArg: T[EventName]) => void
   ) {
     this._eventEmitter.off(eventName.toString(), handler as any);
   }
