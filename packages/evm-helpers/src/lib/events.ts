@@ -2,6 +2,7 @@ import { Contract, providers } from 'ethers';
 import { readFileSync } from 'fs';
 import { randomUUID } from 'crypto';
 import { get_latest_block } from './contract';
+import { PromiseType } from './types';
 export const add_contracts = async (prisma: any, contracts_arr: any[]) => {
   const contracts = await prisma.contract_pm.count();
 
@@ -75,6 +76,10 @@ export const fetch_transactions_for_contract = async (
   );
   let currentIndexTill: number = indexedTillBlock;
 
+  const return_data: PromiseType<
+    ReturnType<typeof fetch_contract_transactions_for_range>
+  > = [];
+
   while (currentIndexTill < latestBlock) {
     if (latestBlock - currentIndexTill > batchSize) {
       currentIndexTill = currentIndexTill + batchSize;
@@ -88,14 +93,15 @@ export const fetch_transactions_for_contract = async (
       `
     );
 
-    const promises: Promise<any>[] = [];
+    const promises: ReturnType<typeof fetch_contract_transactions_for_range>[] =
+      [];
 
     for (let index = 0; index < contract_events.length; index++) {
       const event_changed_name = contract_events[index];
 
       promises.push(
         (async () => {
-          await fetch_contract_transactions_for_range(
+          const data = await fetch_contract_transactions_for_range(
             event_changed_name,
             contract,
             contract_instance,
@@ -104,12 +110,17 @@ export const fetch_transactions_for_contract = async (
             contract_pm,
             prisma
           );
+          return data;
         })()
       );
     }
 
-    await Promise.all(promises);
+    (await Promise.all(promises)).map((promise) => {
+      return_data.push(...promise);
+    });
   }
+
+  return return_data;
 };
 
 async function fetch_contract_transactions_for_range(
@@ -166,7 +177,7 @@ async function fetch_contract_transactions_for_range(
     });
   }
 
-  const entry = to_save_args.map((e) => {
+  const entries = to_save_args.map((e) => {
     const uuid = randomUUID() as string;
     return {
       id: uuid,
@@ -182,16 +193,16 @@ async function fetch_contract_transactions_for_range(
   console.warn(
     `Found events for ${event_changed_name} [${contract_pm.name}]: ${queryData.length}`
   );
-  const event_entry = entry.map((e) => e.event_entry);
+  const event_entry = entries.map((e) => e.event_entry);
 
   await prisma.event_pm.createMany({
     data: event_entry,
   });
   // TODO: this loop makes this function sequential
   // as we are storing indexedTillBlock in the database.
-  // Need a way to store temp tranasction data and then
+  // Need a way to store temp transaction data and then
   // update the indexedTillBlock in the database.
-  const event_entry_data = entry.map((e) => e.data);
+  const event_entry_data = entries.map((e) => e.data);
 
   await prisma[event_changed_name].createMany({
     data: event_entry_data,
@@ -205,4 +216,6 @@ async function fetch_contract_transactions_for_range(
       indexedTillBlock: currentIndexTill,
     },
   });
+
+  return entries;
 }
