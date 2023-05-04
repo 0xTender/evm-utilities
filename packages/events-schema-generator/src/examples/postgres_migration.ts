@@ -1,12 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import { providers } from 'ethers';
 import {
-  PromiseType,
   add_contracts,
   fetch_transactions_for_contract,
+  MigrationEventTypes,
+  MigrationListener,
 } from '@0xtender/evm-helpers';
-import { EventEmitter } from 'events';
-
 
 const batchSize = 1000;
 
@@ -73,42 +72,17 @@ const contracts_arr: {
 },
 ];
 
-type EventTypes = {
-  event_data: PromiseType<ReturnType<typeof fetch_transactions_for_contract>>;
-};
-
-export class HeisenbergListener<T extends EventTypes> {
-  private _eventEmitter: EventEmitter = new EventEmitter();
-
-  emit<EventName extends keyof T>(
-    eventName: EventName,
-    eventArg: T[EventName]
-  ) {
-    this._eventEmitter.emit(eventName.toString(), ...(eventArg as []));
-  }
-
-  on<EventName extends keyof T>(
-    eventName: EventName,
-    handler: (eventArg: T[EventName]) => void
-  ) {
-    this._eventEmitter.on(eventName.toString(), handler as any);
-  }
-
-  off<EventName extends keyof T>(
-    eventName: EventName,
-    handler: (eventArg: T[EventName]) => void
-  ) {
-    this._eventEmitter.off(eventName.toString(), handler as any);
-  }
-}
-
 class Placeholder {
-  private static _eventEmitter: HeisenbergListener<EventTypes> | undefined;
-  public static get eventEmitter(): HeisenbergListener<EventTypes> | undefined {
+  private static _eventEmitter:
+    | MigrationListener<MigrationEventTypes>
+    | undefined;
+  public static get eventEmitter():
+    | MigrationListener<MigrationEventTypes>
+    | undefined {
     return Placeholder._eventEmitter;
   }
   public static set eventEmitter(
-    value: HeisenbergListener<EventTypes> | undefined
+    value: MigrationListener<MigrationEventTypes> | undefined
   ) {
     if (!Placeholder._eventEmitter) {
       Placeholder._eventEmitter = value;
@@ -125,16 +99,14 @@ const run = async () => {
     promises.push(
       (async () => {
         try {
-          const data = await fetch_transactions_for_contract(
+          await fetch_transactions_for_contract(
             contract,
             events,
             get_provider(contract.chainId),
             prisma,
-            batchSize
+            batchSize,
+            Placeholder.eventEmitter
           );
-          if (Placeholder.eventEmitter) {
-            Placeholder.eventEmitter.emit('event_data', data);
-          }
         } catch (err) {
           console.error(err);
           console.log(`Running failed transaction again in 5 seconds...`);
@@ -158,8 +130,8 @@ const run = async () => {
   }, 10_000);
 };
 
-export const migrate = async <T extends EventTypes>(
-  emitter?: HeisenbergListener<T>
+export const migrate = async <T extends MigrationEventTypes>(
+  emitter?: MigrationListener<T>
 ) => {
   Placeholder.eventEmitter = emitter;
 
