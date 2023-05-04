@@ -3,6 +3,8 @@ import { readFileSync } from 'fs';
 import { randomUUID } from 'crypto';
 import { get_latest_block } from './contract';
 import { PromiseType } from './types';
+import { MigrationListener } from './listener';
+
 export const add_contracts = async (prisma: any, contracts_arr: any[]) => {
   const contracts = await prisma.contract_pm.count();
 
@@ -43,6 +45,12 @@ const get_event_name_internal = (event_name: string, contract_name: string) => {
   return event_name.slice(2, event_name.length - contract_name.length - 1);
 };
 
+export type MigrationEventTypes = {
+  event_data: [
+    PromiseType<ReturnType<typeof fetch_contract_transactions_for_range>>
+  ];
+};
+
 export const fetch_transactions_for_contract = async (
   contract: {
     name: string;
@@ -53,7 +61,8 @@ export const fetch_transactions_for_contract = async (
   events: string[],
   provider: providers.JsonRpcProvider,
   prisma: any,
-  batchSize: number = 1000
+  batchSize: number = 1000,
+  event_emitter?: MigrationListener<MigrationEventTypes>
 ) => {
   const contract_events = events.filter(
     (e) => e.startsWith(`e_`) && e.endsWith(`_${contract.name}`)
@@ -75,10 +84,6 @@ export const fetch_transactions_for_contract = async (
     provider
   );
   let currentIndexTill: number = indexedTillBlock;
-
-  const return_data: PromiseType<
-    ReturnType<typeof fetch_contract_transactions_for_range>
-  > = [];
 
   while (currentIndexTill < latestBlock) {
     if (latestBlock - currentIndexTill > batchSize) {
@@ -115,12 +120,13 @@ export const fetch_transactions_for_contract = async (
       );
     }
 
-    (await Promise.all(promises)).map((promise) => {
-      return_data.push(...promise);
+    (await Promise.all(promises)).map((data) => {
+      if (event_emitter && data.length > 0) {
+        console.log('emitting');
+        setTimeout(() => event_emitter.emit('event_data', data), 0);
+      }
     });
   }
-
-  return return_data;
 };
 
 async function fetch_contract_transactions_for_range(
