@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 
-export class MigrationListener<T extends Record<string, any[]>> {
+export class MigrationListener<T extends Record<string, unknown[]>> {
   private _eventEmitter: EventEmitter = new EventEmitter();
 
   emit<EventName extends keyof T>(

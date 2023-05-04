@@ -122,7 +122,6 @@ export const fetch_transactions_for_contract = async (
 
     (await Promise.all(promises)).map((data) => {
       if (event_emitter && data.length > 0) {
-        console.log('emitting');
         setTimeout(() => event_emitter.emit('event_data', data), 0);
       }
     });
