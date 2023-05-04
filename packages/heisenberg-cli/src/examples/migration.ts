@@ -123,7 +123,7 @@ const run = async () => {
 
   await Promise.all(promises);
 
-  console.log(`Running again... in 10_000 miliseconds...`);
+  console.log(`Running again... in 10_000 milliseconds...`);
   setTimeout(async () => {
     await run();
   }, 10_000);
