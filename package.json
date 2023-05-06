@@ -9,6 +9,7 @@
   },
   "private": true,
   "devDependencies": {
+    "@nrwl/devkit": "^15.9.2",
     "@nrwl/eslint-plugin-nx": "15.9.2",
     "@nrwl/js": "^15.9.2",
     "@nrwl/linter": "15.9.2",
@@ -18,12 +19,12 @@
     "@typescript-eslint/parser": "^5.36.1",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
-    "ethers": "^5.7.2",
     "liquidjs": "^10.7.0",
     "nx": "15.9.2",
     "prettier": "^2.6.2",
+    "tslib": "^2.5.0",
     "tsx": "^3.12.6",
-    "typescript": "^5.0.4",
+    "typescript": "^4",
     "yalc": "^1.0.0-pre.53"
   },
   "workspaces": [
@@ -31,9 +32,7 @@
     "packages/events-utilities",
     "packages/heisenberg-cli"
   ],
-  "dependencies": {
-    "@0xtender/heisenberg-cli": "^0.0.2",
-    "@nrwl/devkit": "^15.9.2",
-    "tslib": "^2.5.0"
+  "peerDependencies": {
+    "ethers": "^5.7.2"
   }
 }
