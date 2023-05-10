@@ -18,7 +18,8 @@ export const get_block_from_tx_hash = async (
   provider: providers.Provider
 ) => {
   const tx = await provider.getTransaction(txHash);
-  if (!tx) throw new Error(`Transaction not found: ${txHash}`);
+  if (!tx || !tx.blockNumber)
+    throw new Error(`Transaction not found: ${txHash}`);
   return tx.blockNumber;
 };
 

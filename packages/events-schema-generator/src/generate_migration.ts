@@ -52,7 +52,7 @@ export const generate_migration = async <T extends Contract>(
           );
           return {
             chainId: e.chainId,
-            initBlock,
+            initBlock: initBlock - 1,
             name: e.contractName,
             address: e.address,
             transactionHash: e.transactionHash,

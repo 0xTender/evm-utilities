@@ -1,6 +1,6 @@
 {
   "name": "@0xtender/evm-helpers",
-  "version": "0.2.4-beta",
+  "version": "0.2.5",
   "type": "commonjs",
   "peerDependencies": {
     "ethers": ">=5.7.2 <6"

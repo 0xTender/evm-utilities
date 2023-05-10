@@ -75,7 +75,7 @@ export const fetch_transactions_for_contract = async (
     },
   });
 
-  const indexedTillBlock = contract_pm.indexedTillBlock;
+  const indexedTillBlock = contract_pm.indexedTillBlock + 1;
   const latestBlock = await get_latest_block(provider);
 
   const contract_instance = new Contract(
