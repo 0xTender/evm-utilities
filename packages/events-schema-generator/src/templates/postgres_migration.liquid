@@ -106,7 +106,10 @@ export const migrate = async <T extends MigrationEventTypes>(
 
   const chains = Array.from(new Set(contracts_arr.map((e) => e.chainId)));
   for (let index = 0; index < chains.length; index++) {
-    const chainId = chains[index];
+    // ts is dumb.
+    // throws error inside for loop even with index without (!)
+    // probably introduced due to shared memory space in async context
+    const chainId = chains[index]!;
     try {
       console.log('provider ready');
       await get_provider(chainId).ready;

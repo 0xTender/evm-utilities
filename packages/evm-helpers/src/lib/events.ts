@@ -75,7 +75,7 @@ export const fetch_transactions_for_contract = async (
     },
   });
 
-  const indexedTillBlock = contract_pm.indexedTillBlock + 1;
+  const indexedTillBlock = contract_pm.indexedTillBlock;
   const latestBlock = await get_latest_block(provider);
 
   const contract_instance = new Contract(
@@ -85,12 +85,13 @@ export const fetch_transactions_for_contract = async (
   );
   let currentIndexTill: number = indexedTillBlock;
 
-  while (currentIndexTill < latestBlock) {
+  while (currentIndexTill <= latestBlock) {
     if (latestBlock - currentIndexTill > batchSize) {
       currentIndexTill = currentIndexTill + batchSize;
     } else {
       currentIndexTill = latestBlock;
     }
+
     console.log(
       `pendingBlocks (${contract_pm.name}): ${latestBlock - indexedTillBlock}
       currentBlock: ${currentIndexTill}
@@ -110,11 +111,16 @@ export const fetch_transactions_for_contract = async (
             event_changed_name,
             contract,
             contract_instance,
+            // inclusive
             indexedTillBlock,
+            // inclusive
             currentIndexTill,
             contract_pm,
             prisma
           );
+
+          currentIndexTill += 1;
+
           return data;
         })()
       );
@@ -132,8 +138,8 @@ async function fetch_contract_transactions_for_range(
   event_changed_name: string,
   contract: { name: string; address: string; chainId: number; abiPath: string },
   contract_instance: Contract,
-  indexedTillBlock: any,
-  currentIndexTill: number,
+  fromBlock: any,
+  toBlock: number,
   contract_pm: any,
   prisma: any
 ) {
@@ -144,10 +150,11 @@ async function fetch_contract_transactions_for_range(
   const event = Object.values(contract_instance.interface.events).filter(
     (e) => e.name === event_name
   )[0]!;
+  console.log({ fromBlock, toBlock, event_name, event });
   const queryData = await contract_instance.queryFilter(
     contract_instance.filters[event_name](),
-    indexedTillBlock,
-    currentIndexTill
+    fromBlock,
+    toBlock
   );
 
   const to_save_args: {
@@ -218,9 +225,9 @@ async function fetch_contract_transactions_for_range(
       id: contract_pm.id,
     },
     data: {
-      indexedTillBlock: currentIndexTill,
+      indexedTillBlock: toBlock + 1,
     },
   });
 
-  return entries;
+  return entries.map((e) => ({ ...e, event_changed_name }));
 }
